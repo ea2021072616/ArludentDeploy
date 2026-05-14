@@ -1,0 +1,181 @@
+# ============================================================
+# Docker Compose - Arludent (Sistema de Gestión Odontológica)
+# ============================================================
+# Uso:
+#   docker-compose up -d          → Levantar todo
+#   docker-compose down           → Parar todo
+#   docker-compose logs -f        → Ver logs en tiempo real
+#   docker-compose up -d --build  → Rebuild y levantar
+# ============================================================
+
+services:
+
+  # ============ BASE DE DATOS ============
+  db:
+    image: mysql:8.0
+    container_name: arludent-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT_EXTERNAL:-3307}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-arludent2024}
+      MYSQL_DATABASE: ${DB_DATABASE:-consultorio}
+      MYSQL_USER: ${DB_USERNAME_APP:-arludent}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-arludent2024}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-arludent2024}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - arludent-network
+
+  # ============ BACKEND (Laravel + PHP-FPM + Nginx) ============
+  backend:
+    build:
+      context: ./backend-arludent
+      dockerfile: Dockerfile
+    container_name: arludent-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:80"
+    environment:
+      # Laravel
+      APP_NAME: "API Arludent"
+      APP_ENV: production
+      APP_KEY: ${APP_KEY:-base64:Iqnmq/c3F906hs7jVm/EcXniSnycISSHMUxCwzWX5Cw=}
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      APP_FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      APP_TIMEZONE: America/Lima
+
+      # Base de datos (apunta al servicio 'db')
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-consultorio}
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-arludent2024}
+
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-XBSx7ZkhQOMBkVSsoyfmuEmd9fsbB9QHqU2e2VyFdMqmxEZJXt6cTBzooCkcAolU}
+      JWT_TTL: 60
+      JWT_REFRESH_TTL: 20160
+
+      # Cola (database driver para producción)
+      QUEUE_CONNECTION: database
+
+      # Correo
+      MAIL_MAILER: smtp
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-erickhc1331@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: tls
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-erickhc1331@gmail.com}
+      MAIL_FROM_NAME: "Arludent Tacna"
+
+      # CORS
+      CORS_ALLOWED_ORIGINS: "*"
+
+      # reCAPTCHA deshabilitado por defecto en Docker
+      RECAPTCHA_ENABLED: "false"
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY:-dummy-secret-key}
+
+      # MFA
+      GOOGLE2FA_ENABLED: "true"
+
+      # API Key interna (para agente IA)
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-arludent-internal-2024-secure-key-xyz789}
+
+      # Cache
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      LOG_CHANNEL: stack
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/html/storage
+    networks:
+      - arludent-network
+
+  # ============ FRONTEND (Vue 3 + Nginx) ============
+  frontend:
+    build:
+      context: ./arludent-frontend
+      dockerfile: Dockerfile
+      args:
+        # La URL del API se embebe en build-time por Vite
+        # Apunta a /api que Nginx reenviará al backend
+        VITE_API_URL: /api
+        VITE_APP_NAME: "Arludent"
+        VITE_RECAPTCHA_SITE_KEY: "6LccIekrAAAAAONqFqH07DiMAoIe6_xwVLhMfPd6"
+    container_name: arludent-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    networks:
+      - arludent-network
+
+  # ============ AGENTE IA (Python + FastAPI) ============
+  agent:
+    build:
+      context: ./agenteIA-arludent
+      dockerfile: Dockerfile
+    container_name: arludent-agent
+    restart: unless-stopped
+    ports:
+      - "${AGENT_PORT:-8001}:8001"
+    environment:
+      APP_NAME: "Arludent AI Microservice"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_HOST: "0.0.0.0"
+      APP_PORT: "8001"
+
+      # OpenAI
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      OPENAI_TEMPERATURE: "0.4"
+      OPENAI_MAX_TOKENS: "3000"
+
+      # Backend (comunicación interna via Docker network)
+      BACKEND_URL: http://backend:80
+      LARAVEL_API_URL: http://backend:80
+      BACKEND_INTERNAL_API_KEY: ${INTERNAL_API_KEY:-arludent-internal-2024-secure-key-xyz789}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-arludent-internal-2024-secure-key-xyz789}
+
+      # Redis deshabilitado
+      REDIS_ENABLED: "false"
+      DATABASE_ENABLED: "false"
+
+      # CORS
+      CORS_ORIGINS: ${FRONTEND_URL:-http://localhost:3000}
+
+      # Seguridad
+      SECRET_KEY: ${SECRET_KEY:-arludent-agent-secret-key-2024-super-secure}
+
+      # Logging
+      LOG_LEVEL: INFO
+    depends_on:
+      - backend
+    networks:
+      - arludent-network
+
+# ============ VOLÚMENES ============
+volumes:
+  mysql_data:
+    driver: local
+  backend_storage:
+    driver: local
+
+# ============ RED ============
+networks:
+  arludent-network:
+    driver: bridge
