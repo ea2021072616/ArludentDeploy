@@ -1,0 +1,11 @@
+.git
+.gitignore
+node_modules
+dist
+cypress
+tests
+.vscode
+*.md
+Dockerfile
+.env
+.env.*

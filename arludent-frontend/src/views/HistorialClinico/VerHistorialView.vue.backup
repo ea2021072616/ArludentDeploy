@@ -1,0 +1,659 @@
+<template>
+  <DashboardLayout>
+    <div class="space-y-6">
+      <!-- Header Mejorado -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
+        <button @click="volver" class="text-blue-100 hover:text-white mb-3 flex items-center transition-colors group">
+          <ArrowLeft class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+          Volver a Historial Clínico
+        </button>
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="text-3xl font-bold mb-2">Historial Clínico</h1>
+            <div v-if="historial" class="flex items-center space-x-4">
+              <div class="flex items-center space-x-2">
+                <User class="w-5 h-5 text-blue-200" />
+                <span class="text-lg font-medium">
+                  {{ historial.paciente.nombres }} {{ historial.paciente.apellidos }}
+                </span>
+              </div>
+              <div class="flex items-center space-x-2 bg-white/20 px-3 py-1 rounded-lg">
+                <FileText class="w-4 h-4 text-blue-200" />
+                <span class="text-sm font-mono">{{ historial.codigo_historial }}</span>
+              </div>
+            </div>
+          </div>
+          <div v-if="historial" class="flex space-x-2">
+            <Button variant="secondary" class="bg-white text-blue-600 hover:bg-blue-50" size="sm" @click="imprimirHistorial">
+              <Printer class="w-4 h-4 mr-2" />
+              Imprimir
+            </Button>
+            <Button
+              :variant="modoEdicion ? 'secondary' : 'primary'"
+              class="bg-white text-blue-600 hover:bg-blue-50"
+              size="sm"
+              @click="modoEdicion = !modoEdicion"
+            >
+              <Edit class="w-4 h-4 mr-2" />
+              {{ modoEdicion ? 'Cancelar' : 'Editar' }}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Mejorados -->
+      <Card v-if="historial" class="overflow-hidden">
+        <div class="border-b border-gray-200 bg-gray-50">
+          <nav class="flex space-x-1 p-2">
+            <button
+              v-for="tab in tabs"
+              :key="tab.id"
+              @click="tabActivo = tab.id"
+              :class="[
+                'flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center space-x-2',
+                tabActivo === tab.id
+                  ? 'bg-white text-blue-600 shadow-md ring-2 ring-blue-500/20 transform scale-105'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+              ]"
+            >
+              <component :is="tab.icon" :class="['w-5 h-5', tabActivo === tab.id ? 'text-blue-600' : 'text-gray-400']" />
+              <span>{{ tab.label }}</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6">
+          <!-- TAB 1: Información General -->
+          <div v-if="tabActivo === 'info'" class="space-y-6">
+            <!-- Datos del Paciente Mejorado -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 flex justify-between items-center border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                  <div class="bg-blue-600 p-2 rounded-lg">
+                    <User class="w-5 h-5 text-white" />
+                  </div>
+                  <h3 class="text-lg font-bold text-gray-900">Datos del Paciente</h3>
+                </div>
+                <Button v-if="!editandoPaciente" variant="ghost" size="sm" @click="editandoPaciente = true">
+                  <Edit class="w-4 h-4 mr-2" />
+                  Editar Datos
+                </Button>
+              </div>
+
+              <div v-if="!editandoPaciente" class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombres</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.nombres }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Apellidos</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.apellidos }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">DNI</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.dni || 'No especificado' }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Fecha de Nacimiento</label>
+                    <p class="text-gray-900 font-medium">{{ formatDate(historial.paciente.fecha_nacimiento) || 'No especificado' }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sexo</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.sexo || 'No especificado' }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Grupo Sanguíneo</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.grupo_sanguineo || 'No especificado' }}</p>
+                  </div>
+                  <div class="md:col-span-2 space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Domicilio</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.domicilio || 'No especificado' }}</p>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Teléfono</label>
+                    <p class="text-gray-900 font-medium">{{ historial.paciente.telefono || 'No especificado' }}</p>
+                  </div>
+                  <div class="md:col-span-3 space-y-1">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alergias</label>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                      <p class="text-red-900 font-medium">{{ historial.paciente.alergias || 'No especificado' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formulario Editar Paciente -->
+              <div v-else class="bg-blue-50 p-4 rounded-lg space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <InputField v-model="formPaciente.nombres" label="Nombres" />
+                  <InputField v-model="formPaciente.apellidos" label="Apellidos" />
+                  <InputField v-model="formPaciente.dni" label="DNI" />
+                  <InputField v-model="formPaciente.fecha_nacimiento" label="Fecha Nacimiento" type="date" />
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                    <select v-model="formPaciente.sexo" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                      <option value="">Seleccionar</option>
+                      <option value="M">Masculino</option>
+                      <option value="F">Femenino</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
+                  <InputField v-model="formPaciente.grupo_sanguineo" label="Grupo Sanguíneo" />
+                  <InputField v-model="formPaciente.domicilio" label="Domicilio" class="md:col-span-2" />
+                  <InputField v-model="formPaciente.telefono_responsable" label="Teléfono" />
+                  <InputField v-model="formPaciente.alergias" label="Alergias" class="md:col-span-3" type="textarea" rows="2" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                  <Button variant="secondary" @click="cancelarEdicionPaciente">Cancelar</Button>
+                  <Button variant="primary" @click="guardarDatosPaciente" :loading="guardandoPaciente">
+                    <Save class="w-4 h-4 mr-1" />
+                    Guardar Cambios
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información Clínica Mejorada -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div class="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                  <div class="bg-green-600 p-2 rounded-lg">
+                    <Stethoscope class="w-5 h-5 text-white" />
+                  </div>
+                  <h3 class="text-lg font-bold text-gray-900">Información Clínica</h3>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <div v-if="!modoEdicion" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl border border-blue-200">
+                    <label class="text-xs font-semibold text-blue-700 uppercase tracking-wide flex items-center space-x-2 mb-2">
+                      <FileText class="w-4 h-4" />
+                      <span>Motivo de Consulta</span>
+                    </label>
+                    <p class="text-gray-900 font-medium">{{ historial.motivo_consulta || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-5 rounded-xl border border-purple-200">
+                    <label class="text-xs font-semibold text-purple-700 uppercase tracking-wide flex items-center space-x-2 mb-2">
+                      <Activity class="w-4 h-4" />
+                      <span>Higiene Bucal</span>
+                    </label>
+                    <p class="text-gray-900 font-medium">{{ historial.higiene_bucal || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl border border-amber-200">
+                    <label class="text-xs font-semibold text-amber-700 uppercase tracking-wide flex items-center space-x-2 mb-2">
+                      <AlertCircle class="w-4 h-4" />
+                      <span>Diagnóstico Presuntivo</span>
+                    </label>
+                    <p class="text-gray-900 font-medium">{{ historial.diagnostico_presuntivo || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gradient-to-br from-red-50 to-red-100 p-5 rounded-xl border border-red-200">
+                    <label class="text-xs font-semibold text-red-700 uppercase tracking-wide flex items-center space-x-2 mb-2">
+                      <CheckCircle class="w-4 h-4" />
+                      <span>Diagnóstico Principal</span>
+                    </label>
+                    <p class="text-gray-900 font-medium">{{ historial.diagnostico_principal || 'No especificado' }}</p>
+                  </div>
+                </div>
+
+              <!-- Modo Edición -->
+              <div v-else class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField v-model="formHistorial.motivo_consulta" label="Motivo de Consulta" type="textarea" rows="2" />
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Higiene Bucal</label>
+                    <select v-model="formHistorial.higiene_bucal" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                      <option value="">Seleccionar</option>
+                      <option value="Bueno">Bueno</option>
+                      <option value="Regular">Regular</option>
+                      <option value="Malo">Malo</option>
+                    </select>
+                  </div>
+                  <InputField v-model="formHistorial.diagnostico_presuntivo" label="Diagnóstico Presuntivo" type="textarea" rows="2" />
+                  <InputField v-model="formHistorial.diagnostico_principal" label="Diagnóstico Principal" type="textarea" rows="2" />
+                </div>
+                <div class="flex justify-end mt-4">
+                  <Button variant="primary" @click="guardarHistorial" :loading="guardandoHistorial">
+                    <Save class="w-4 h-4 mr-2" />
+                    Guardar Cambios
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Anamnesis Mejorada -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                  <div class="bg-indigo-600 p-2 rounded-lg">
+                    <ClipboardList class="w-5 h-5 text-white" />
+                  </div>
+                  <h3 class="text-lg font-bold text-gray-900">Anamnesis</h3>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Síntoma Principal</label>
+                    <p class="text-gray-900 font-medium">{{ historial.sintoma_principal || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tiempo de Inicio</label>
+                    <p class="text-gray-900 font-medium">{{ historial.tiempo_inicio_sintomas || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 md:col-span-2">
+                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Tratamiento Previo</label>
+                    <p class="text-gray-900 font-medium">{{ historial.tratamiento_previo || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 md:col-span-2">
+                    <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2 block">Enfermedades Actuales</label>
+                    <p class="text-gray-900 font-medium">{{ historial.enfermedades_actuales || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                    <label class="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2 block">Bajo Tratamiento Médico</label>
+                    <p class="text-gray-900 font-semibold">{{ historial.bajo_tratamiento_medico ? 'Sí' : 'No' }}</p>
+                    <p v-if="historial.bajo_tratamiento_medico && historial.detalle_tratamiento_actual" class="text-sm text-gray-700 mt-2 italic">
+                      {{ historial.detalle_tratamiento_actual }}
+                    </p>
+                  </div>
+                  <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                    <label class="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-2 block">Intervenciones Quirúrgicas</label>
+                    <p class="text-gray-900 font-semibold">{{ historial.intervenciones_quirurgicas_previas ? 'Sí' : 'No' }}</p>
+                    <p v-if="historial.intervenciones_quirurgicas_previas && historial.detalle_intervenciones" class="text-sm text-gray-700 mt-2 italic">
+                      {{ historial.detalle_intervenciones }}
+                    </p>
+                  </div>
+                  <div class="bg-red-50 p-4 rounded-xl border border-red-200 md:col-span-2">
+                    <label class="text-xs font-semibold text-red-700 uppercase tracking-wide mb-2 block">Alergias del Paciente</label>
+                    <p class="text-red-900 font-semibold">{{ historial.alergias_paciente || 'No especificado' }}</p>
+                  </div>
+                  <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 md:col-span-2">
+                    <label class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-3 block">Problemas Específicos</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div class="flex items-center space-x-2 bg-white p-2 rounded-lg">
+                        <input type="checkbox" :checked="historial.hemorragia_post_tratamiento" disabled class="rounded text-purple-600" />
+                        <span class="text-sm text-gray-700 font-medium">Hemorragia post-tratamiento</span>
+                      </div>
+                      <div class="flex items-center space-x-2 bg-white p-2 rounded-lg">
+                        <input type="checkbox" :checked="historial.problema_anestesia" disabled class="rounded text-purple-600" />
+                        <span class="text-sm text-gray-700 font-medium">Problemas con anestesia</span>
+                      </div>
+                      <div class="flex items-center space-x-2 bg-white p-2 rounded-lg">
+                        <input type="checkbox" :checked="historial.dificultad_abrir_masticar" disabled class="rounded text-purple-600" />
+                        <span class="text-sm text-gray-700 font-medium">Dificultad abrir/masticar</span>
+                      </div>
+                      <div class="flex items-center space-x-2 bg-white p-2 rounded-lg">
+                        <input type="checkbox" :checked="historial.sensibilidad_dental" disabled class="rounded text-purple-600" />
+                        <span class="text-sm text-gray-700 font-medium">Sensibilidad dental</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Odontograma -->
+          <div v-if="tabActivo === 'odontograma'">
+            <OdontogramaInteractivo
+              v-if="historial"
+              :idHistorial="historial.id_historial"
+              :piezasDentales="historial.odontograma || []"
+              @actualizado="cargarHistorial"
+            />
+          </div>
+
+          <!-- TAB 3: Tratamientos -->
+          <div v-if="tabActivo === 'tratamientos'" class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-gray-900">Tratamientos Registrados</h3>
+              <Button variant="primary" size="sm" @click="abrirModalNuevoTratamiento">
+                <Plus class="w-4 h-4 mr-1" />
+                Agregar Tratamiento
+              </Button>
+            </div>
+
+            <div v-if="historial.tratamientos && historial.tratamientos.length > 0" class="space-y-3">
+              <div v-for="tratamiento in historial.tratamientos" :key="tratamiento.id"
+                   class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-900">{{ tratamiento.tratamiento.nombre }}</h4>
+                    <p v-if="tratamiento.descripcion" class="text-sm text-gray-600 mt-1">{{ tratamiento.descripcion }}</p>
+                    <div class="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                      <span v-if="tratamiento.fecha_inicio">
+                        <Calendar class="w-4 h-4 inline mr-1" />
+                        Inicio: {{ formatDate(tratamiento.fecha_inicio) }}
+                      </span>
+                      <span v-if="tratamiento.precio" class="text-green-600 font-medium">
+                        S/ {{ tratamiento.precio }}
+                      </span>
+                    </div>
+                  </div>
+                  <span :class="[
+                    'px-3 py-1 text-xs font-semibold rounded-full',
+                    {
+                      'bg-yellow-100 text-yellow-800': tratamiento.estado === 'sugerido',
+                      'bg-blue-100 text-blue-800': tratamiento.estado === 'en_curso',
+                      'bg-green-100 text-green-800': tratamiento.estado === 'completado',
+                      'bg-red-100 text-red-800': tratamiento.estado === 'cancelado'
+                    }
+                  ]">
+                    {{ estadoTratamientoLabel(tratamiento.estado) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="text-center py-12 bg-gray-50 rounded-lg">
+              <Stethoscope class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">No hay tratamientos registrados</h3>
+              <p class="text-gray-600">Agrega el primer tratamiento para este paciente</p>
+            </div>
+          </div>
+
+          <!-- TAB 4: Consultas -->
+          <div v-if="tabActivo === 'consultas'" class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-gray-900">Historial de Consultas</h3>
+              <Button variant="primary" size="sm" @click="abrirModalNuevaConsulta">
+                <Plus class="w-4 h-4 mr-1" />
+                Nueva Consulta
+              </Button>
+            </div>
+
+            <div v-if="historial.detalles && historial.detalles.length > 0" class="space-y-4">
+              <div v-for="detalle in historial.detalles" :key="detalle.id_detalle"
+                   class="bg-white border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-3">
+                  <div class="flex items-center space-x-2">
+                    <Calendar class="w-5 h-5 text-gray-400" />
+                    <span class="font-semibold text-gray-900">{{ formatDate(detalle.fecha) }}</span>
+                  </div>
+                  <span v-if="detalle.realizadoPor" class="text-sm text-gray-500">
+                    Dr. {{ detalle.realizadoPor.nombres }} {{ detalle.realizadoPor.apellidos }}
+                  </span>
+                </div>
+                <div v-if="detalle.diagnostico" class="mb-2">
+                  <label class="text-sm font-medium text-gray-600">Diagnóstico:</label>
+                  <p class="text-gray-900">{{ detalle.diagnostico }}</p>
+                </div>
+                <div v-if="detalle.procedimiento_realizado" class="mb-2">
+                  <label class="text-sm font-medium text-gray-600">Procedimiento:</label>
+                  <p class="text-gray-900">{{ detalle.procedimiento_realizado }}</p>
+                </div>
+                <div v-if="detalle.notas_medicas">
+                  <label class="text-sm font-medium text-gray-600">Notas Médicas:</label>
+                  <p class="text-gray-700">{{ detalle.notas_medicas }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="text-center py-12 bg-gray-50 rounded-lg">
+              <ClipboardList class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">No hay consultas registradas</h3>
+              <p class="text-gray-600">Agrega detalles de las consultas realizadas</p>
+            </div>
+          </div>
+
+          <!-- TAB 5: Prescripciones -->
+          <div v-if="tabActivo === 'prescripciones'" class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-gray-900">Prescripciones Médicas</h3>
+              <Button variant="primary" size="sm" @click="abrirModalNuevaPrescripcion">
+                <Plus class="w-4 h-4 mr-1" />
+                Nueva Prescripción
+              </Button>
+            </div>
+
+            <div v-if="historial.prescripciones && historial.prescripciones.length > 0" class="space-y-3">
+              <div v-for="prescripcion in historial.prescripciones" :key="prescripcion.id_prescripcion"
+                   class="bg-white border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold text-gray-900">{{ prescripcion.medicamento }}</h4>
+                  <span class="text-sm text-gray-500">{{ formatDate(prescripcion.fecha_prescripcion) }}</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div v-if="prescripcion.dosis">
+                    <span class="font-medium text-gray-600">Dosis:</span>
+                    <p class="text-gray-900">{{ prescripcion.dosis }}</p>
+                  </div>
+                  <div v-if="prescripcion.frecuencia">
+                    <span class="font-medium text-gray-600">Frecuencia:</span>
+                    <p class="text-gray-900">{{ prescripcion.frecuencia }}</p>
+                  </div>
+                  <div v-if="prescripcion.duracion">
+                    <span class="font-medium text-gray-600">Duración:</span>
+                    <p class="text-gray-900">{{ prescripcion.duracion }}</p>
+                  </div>
+                </div>
+                <div v-if="prescripcion.indicaciones" class="mt-2">
+                  <span class="font-medium text-gray-600 text-sm">Indicaciones:</span>
+                  <p class="text-gray-700 text-sm mt-1">{{ prescripcion.indicaciones }}</p>
+                </div>
+                <div v-if="prescripcion.prescritoPor" class="mt-2 text-sm text-gray-500">
+                  Prescrito por: Dr. {{ prescripcion.prescritoPor.nombres }} {{ prescripcion.prescritoPor.apellidos }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="text-center py-12 bg-gray-50 rounded-lg">
+              <Pill class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">No hay prescripciones</h3>
+              <p class="text-gray-600">Registra medicamentos recetados al paciente</p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      <!-- Loading -->
+      <Card v-else-if="loading">
+        <div class="flex justify-center py-12">
+          <Loading />
+        </div>
+      </Card>
+
+      <!-- Error -->
+      <Card v-else>
+        <div class="text-center py-12">
+          <p class="text-gray-600">No se pudo cargar el historial clínico</p>
+        </div>
+      </Card>
+    </div>
+  </DashboardLayout>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, reactive } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import {
+  ArrowLeft, Edit, Save, Printer, Plus, Calendar,
+  Stethoscope, ClipboardList, Pill, User, FileText, Activity,
+  AlertCircle, CheckCircle
+} from 'lucide-vue-next'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import Card from '@/components/common/Card.vue'
+import Button from '@/components/common/Button.vue'
+import InputField from '@/components/common/InputField.vue'
+import Loading from '@/components/common/Loading.vue'
+import OdontogramaInteractivo from '@/components/historial/OdontogramaInteractivo.vue'
+import historialClinicoService, { type HistorialClinico } from '@/api/historialClinicoService'
+import { actualizarPaciente } from '@/api/pacienteService'
+import Swal from 'sweetalert2'
+
+const router = useRouter()
+const route = useRoute()
+
+// Estado
+const loading = ref(false)
+const historial = ref<HistorialClinico | null>(null)
+const tabActivo = ref('info')
+const modoEdicion = ref(false)
+const editandoPaciente = ref(false)
+const guardandoPaciente = ref(false)
+const guardandoHistorial = ref(false)
+
+// Tabs
+const tabs = [
+  { id: 'info', label: 'Información General', icon: User },
+  { id: 'odontograma', label: 'Odontograma', icon: Activity },
+  { id: 'tratamientos', label: 'Tratamientos', icon: Stethoscope },
+  { id: 'consultas', label: 'Consultas', icon: ClipboardList },
+  { id: 'prescripciones', label: 'Prescripciones', icon: Pill },
+]
+
+// Formularios
+const formPaciente = reactive({
+  nombres: '',
+  apellidos: '',
+  dni: '',
+  fecha_nacimiento: '',
+  sexo: '',
+  domicilio: '',
+  telefono_responsable: '',
+  grupo_sanguineo: '',
+  alergias: ''
+})
+
+const formHistorial = reactive({
+  motivo_consulta: '',
+  diagnostico_presuntivo: '',
+  diagnostico_principal: '',
+  higiene_bucal: ''
+})
+
+// Funciones
+const cargarHistorial = async () => {
+  loading.value = true
+  try {
+    const id = Number(route.params.id)
+    const data = await historialClinicoService.obtenerHistorial(id)
+    historial.value = data.historial
+
+    // Cargar datos en formularios
+    if (historial.value) {
+      Object.assign(formPaciente, {
+        nombres: historial.value.paciente.nombres,
+        apellidos: historial.value.paciente.apellidos,
+        dni: historial.value.paciente.dni || '',
+        fecha_nacimiento: historial.value.paciente.fecha_nacimiento || '',
+        sexo: historial.value.paciente.sexo || '',
+        domicilio: historial.value.paciente.domicilio || '',
+        telefono_responsable: historial.value.paciente.telefono || '',
+        grupo_sanguineo: historial.value.paciente.grupo_sanguineo || '',
+        alergias: historial.value.paciente.alergias || ''
+      })
+
+      Object.assign(formHistorial, {
+        motivo_consulta: historial.value.motivo_consulta || '',
+        diagnostico_presuntivo: historial.value.diagnostico_presuntivo || '',
+        diagnostico_principal: historial.value.diagnostico_principal || '',
+        higiene_bucal: historial.value.higiene_bucal || ''
+      })
+    }
+  } catch (error) {
+    console.error('Error al cargar historial:', error)
+    Swal.fire('Error', 'No se pudo cargar el historial clínico', 'error')
+  } finally {
+    loading.value = false
+  }
+}
+
+const guardarDatosPaciente = async () => {
+  if (!historial.value) return
+
+  guardandoPaciente.value = true
+  try {
+    await actualizarPaciente(historial.value.paciente.id_paciente, formPaciente)
+    Swal.fire('Éxito', 'Datos del paciente actualizados', 'success')
+    editandoPaciente.value = false
+    await cargarHistorial()
+  } catch (error) {
+    console.error('Error al actualizar paciente:', error)
+    Swal.fire('Error', 'No se pudieron actualizar los datos', 'error')
+  } finally {
+    guardandoPaciente.value = false
+  }
+}
+
+const cancelarEdicionPaciente = () => {
+  editandoPaciente.value = false
+  // Recargar datos originales
+  if (historial.value) {
+    Object.assign(formPaciente, {
+      nombres: historial.value.paciente.nombres,
+      apellidos: historial.value.paciente.apellidos,
+      dni: historial.value.paciente.dni || '',
+      fecha_nacimiento: historial.value.paciente.fecha_nacimiento || '',
+      sexo: historial.value.paciente.sexo || '',
+      domicilio: historial.value.paciente.domicilio || '',
+      telefono_responsable: historial.value.paciente.telefono || '',
+      grupo_sanguineo: historial.value.paciente.grupo_sanguineo || '',
+      alergias: historial.value.paciente.alergias || ''
+    })
+  }
+}
+
+const guardarHistorial = async () => {
+  if (!historial.value) return
+
+  guardandoHistorial.value = true
+  try {
+    await historialClinicoService.actualizarHistorial(historial.value.id_historial, formHistorial)
+    Swal.fire('Éxito', 'Historial clínico actualizado', 'success')
+    modoEdicion.value = false
+    await cargarHistorial()
+  } catch (error) {
+    console.error('Error al actualizar historial:', error)
+    Swal.fire('Error', 'No se pudo actualizar el historial', 'error')
+  } finally {
+    guardandoHistorial.value = false
+  }
+}
+
+const volver = () => {
+  router.push('/historial-clinico')
+}
+
+const imprimirHistorial = () => {
+  window.print()
+}
+
+const abrirModalNuevoTratamiento = () => {
+  Swal.fire('Próximamente', 'Funcionalidad de tratamientos en desarrollo', 'info')
+}
+
+const abrirModalNuevaConsulta = () => {
+  Swal.fire('Próximamente', 'Funcionalidad de consultas en desarrollo', 'info')
+}
+
+const abrirModalNuevaPrescripcion = () => {
+  Swal.fire('Próximamente', 'Funcionalidad de prescripciones en desarrollo', 'info')
+}
+
+const estadoTratamientoLabel = (estado: string) => {
+  const labels: Record<string, string> = {
+    sugerido: 'Sugerido',
+    en_curso: 'En Curso',
+    completado: 'Completado',
+    cancelado: 'Cancelado'
+  }
+  return labels[estado] || estado
+}
+
+const formatDate = (date: string | null) => {
+  if (!date) return 'No especificado'
+  return new Date(date).toLocaleDateString('es-PE', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+onMounted(() => {
+  cargarHistorial()
+})
+</script>
