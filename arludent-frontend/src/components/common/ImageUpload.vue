@@ -120,7 +120,7 @@ const handleImageError = (event: Event) => {
       <img
         :src="previewUrl"
         alt="Foto de perfil"
-        class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
+        class="w-32 h-32 object-cover rounded-xl border-2 border-gray-200"
         @error="handleImageError"
         @load="() => console.log('✅ Imagen cargada correctamente:', previewUrl)"
       />
@@ -138,7 +138,7 @@ const handleImageError = (event: Event) => {
       <button
         type="button"
         @click="triggerFileInput"
-        class="flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+        class="flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-gray-200 rounded-xl hover:border-primary-400 hover:bg-primary-50 transition-all duration-300"
       >
         <Upload :size="20" class="text-gray-400" />
         <span class="text-sm text-gray-600">Seleccionar imagen</span>

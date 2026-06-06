@@ -1,8 +1,8 @@
 <template>
   <div :class="['card', { 'card-hover': hover }]">
-    <div v-if="title || $slots.header" class="mb-4 pb-4 border-b border-gray-200">
+    <div v-if="title || $slots.header" class="mb-4 pb-4 border-b border-gray-100">
       <slot name="header">
-        <h3 class="text-lg font-semibold text-gray-900">{{ title }}</h3>
+        <h3 class="text-lg font-bold text-gray-900">{{ title }}</h3>
       </slot>
     </div>
 
@@ -10,7 +10,7 @@
       <slot />
     </div>
 
-    <div v-if="$slots.footer" class="mt-4 pt-4 border-t border-gray-200">
+    <div v-if="$slots.footer" class="mt-4 pt-4 border-t border-gray-100">
       <slot name="footer" />
     </div>
   </div>

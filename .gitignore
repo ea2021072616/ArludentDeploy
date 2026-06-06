@@ -1,0 +1,30 @@
+# ============================================================
+# .gitignore - Arludent Deploy
+# ============================================================
+
+# Variables de entorno (NUNCA subir credenciales)
+.env
+
+# Dependencias
+node_modules/
+vendor/
+venv/
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/

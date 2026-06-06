@@ -2,25 +2,25 @@
   <div v-if="show" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Overlay -->
     <div
-      class="fixed inset-0 bg-black/50 transition-opacity"
+      class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
       @click="closeModal"
     ></div>
 
     <!-- Modal -->
     <div class="flex min-h-full items-center justify-center p-4">
       <div
-        class="relative bg-white rounded-2xl shadow-xl w-full transform transition-all fade-in max-h-[90vh] flex flex-col"
+        class="relative bg-white rounded-2xl shadow-soft-xl w-full transform transition-all fade-in max-h-[90vh] flex flex-col border border-gray-100/80"
         :class="sizeClasses"
         @click.stop
       >
         <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-          <h3 class="text-xl font-semibold text-gray-900">{{ title }}</h3>
+        <div class="flex items-center justify-between p-6 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900">{{ title }}</h3>
           <button
             @click="closeModal"
-            class="text-gray-400 hover:text-gray-600 transition-colors"
+            class="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200"
           >
-            <X class="w-6 h-6" />
+            <X class="w-5 h-5" />
           </button>
         </div>
 
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
+        <div v-if="$slots.footer" class="flex items-center justify-end space-x-3 p-6 border-t border-gray-100">
           <slot name="footer" />
         </div>
       </div>

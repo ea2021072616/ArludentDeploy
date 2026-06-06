@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex">
+  <div class="min-h-screen bg-slate-50/80 flex">
     <!-- Sidebar -->
     <SidebarComponent :isOpen="sidebarOpen" @toggle="toggleSidebar" />
 
@@ -10,12 +10,14 @@
 
       <!-- Page Content -->
       <main class="flex-1 overflow-y-auto p-6">
-        <slot />
+        <div class="animate-fade-in-up">
+          <slot />
+        </div>
       </main>
 
       <!-- Footer -->
-      <footer class="bg-white border-t border-gray-200 py-4 px-6">
-        <p class="text-center text-sm text-gray-600">
+      <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200/60 py-4 px-6">
+        <p class="text-center text-xs text-gray-400 font-medium">
           &copy; {{ currentYear }} Arludent - Sistema de Gestión Odontológica
         </p>
       </footer>

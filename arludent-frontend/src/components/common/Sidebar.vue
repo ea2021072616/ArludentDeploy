@@ -1,34 +1,34 @@
 <template>
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out',
+      'sidebar-container fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out',
       { '-translate-x-full md:translate-x-0': !isOpen }
     ]"
   >
     <!-- Logo Section -->
-    <div class="h-16 flex items-center justify-between px-6 bg-primary-600">
-      <router-link to="/dashboard" class="flex items-center space-x-3">
-        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-          <Smile class="w-5 h-5 text-primary-600" />
+    <div class="sidebar-logo h-16 flex items-center justify-between px-5">
+      <router-link to="/dashboard" class="flex items-center space-x-3 group">
+        <div class="w-9 h-9 bg-accent-500/20 rounded-xl flex items-center justify-center group-hover:bg-accent-500/30 transition-colors duration-300">
+          <Smile class="w-5 h-5 text-accent-400" />
         </div>
-        <span class="text-white font-bold text-lg">Arludent</span>
+        <span class="text-white font-bold text-lg tracking-wide">Arludent</span>
       </router-link>
-      <button @click="$emit('toggle')" class="md:hidden text-white">
+      <button @click="$emit('toggle')" class="md:hidden text-white/70 hover:text-white transition-colors">
         <X class="w-6 h-6" />
       </button>
     </div>
 
     <!-- User Info -->
-    <div class="px-6 py-4 bg-primary-50 border-b border-primary-100">
+    <div class="mx-4 mt-4 mb-5 p-3 rounded-xl bg-white/[0.07] border border-white/[0.08]">
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-primary-200 rounded-full flex items-center justify-center">
-          <User class="w-5 h-5 text-primary-700" />
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400/30 to-accent-500/20 flex items-center justify-center ring-2 ring-white/10">
+          <User class="w-5 h-5 text-primary-200" />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-gray-900 truncate">
+          <p class="text-sm font-semibold text-white truncate">
             {{ user?.username || 'Usuario' }}
           </p>
-          <p class="text-xs text-gray-600 truncate">
+          <p class="text-xs text-primary-300/70 truncate">
             {{ user?.correo || '' }}
           </p>
         </div>
@@ -36,8 +36,8 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 overflow-y-auto py-4">
-      <div class="px-3 space-y-1">
+    <nav class="flex-1 overflow-y-auto px-3 pb-4 sidebar-nav">
+      <div class="space-y-0.5">
         <!-- Dashboard -->
         <router-link
           :to="dashboardTarget"
@@ -59,8 +59,8 @@
         </router-link>
 
         <!-- Separador -->
-        <div class="my-4 border-t border-gray-200"></div>
-        <p v-if="hasRole('medico')" class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div class="my-3 border-t border-white/[0.08]"></div>
+        <p v-if="hasRole('medico')" class="nav-section-label">
           Gestión de Citas
         </p>
 
@@ -76,7 +76,7 @@
         </router-link>
 
         <!-- Separador -->
-        <div class="my-4 border-t border-gray-200"></div>
+        <div class="my-3 border-t border-white/[0.08]"></div>
 
         <!-- Historial Clínico (Médico) -->
         <router-link
@@ -90,7 +90,7 @@
         </router-link>
 
         <!-- Separador - Paciente -->
-        <div v-if="hasRole('paciente') || hasRole('usuario')" class="my-4 border-t border-gray-200"></div>
+        <div v-if="hasRole('paciente') || hasRole('usuario')" class="my-3 border-t border-white/[0.08]"></div>
 
         <!-- Mis Citas (Paciente) -->
         <router-link
@@ -126,8 +126,8 @@
         </router-link>
 
         <!-- Separador - Secretaría -->
-        <div v-if="hasRole('secretaria')" class="my-4 border-t border-gray-200"></div>
-        <p v-if="hasRole('secretaria')" class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div v-if="hasRole('secretaria')" class="my-3 border-t border-white/[0.08]"></div>
+        <p v-if="hasRole('secretaria')" class="nav-section-label">
           Gestión de Secretaría
         </p>
 
@@ -176,8 +176,8 @@
         </router-link>
 
         <!-- Separador - Admin -->
-        <div v-if="hasRole('admin')" class="my-4 border-t border-gray-200"></div>
-        <p v-if="hasRole('admin')" class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div v-if="hasRole('admin')" class="my-3 border-t border-white/[0.08]"></div>
+        <p v-if="hasRole('admin')" class="nav-section-label">
           Administración
         </p>
 
@@ -215,8 +215,8 @@
         </router-link>
 
         <!-- Separador - Área Personal -->
-        <div v-if="hasRole('medico')" class="my-4 border-t border-gray-200"></div>
-        <p v-if="hasRole('medico')" class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div v-if="hasRole('medico')" class="my-3 border-t border-white/[0.08]"></div>
+        <p v-if="hasRole('medico')" class="nav-section-label">
           Mi Perfil Profesional
         </p>
 
@@ -243,8 +243,8 @@
         </router-link>
 
         <!-- Separador - Sistema (Admin) -->
-        <div v-if="hasRole('admin')" class="my-4 border-t border-gray-200"></div>
-        <p v-if="hasRole('admin')" class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <div v-if="hasRole('admin')" class="my-3 border-t border-white/[0.08]"></div>
+        <p v-if="hasRole('admin')" class="nav-section-label">
           Sistema
         </p>
 
@@ -284,8 +284,8 @@
     </nav>
 
     <!-- Logout Button -->
-    <div class="p-4 border-t border-gray-200">
-      <button @click="handleLogout" class="w-full btn btn-danger flex items-center justify-center space-x-2">
+    <div class="p-4 border-t border-white/[0.08]">
+      <button @click="handleLogout" class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/30 transition-all duration-300">
         <LogOut class="w-5 h-5" />
         <span>Cerrar Sesión</span>
       </button>
@@ -296,7 +296,7 @@
   <div
     v-if="isOpen"
     @click="$emit('toggle')"
-    class="fixed inset-0 bg-black/50 z-40 md:hidden"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
   ></div>
 </template>
 
@@ -356,11 +356,51 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+.sidebar-container {
+  background: linear-gradient(180deg, #0A2A45 0%, #103F66 50%, #0D4B7A 100%);
+  box-shadow: 4px 0 25px -5px rgba(10, 42, 69, 0.4);
+}
+
+.sidebar-logo {
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Scrollbar del sidebar */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Navigation Items */
 .nav-item {
-  @apply flex items-center space-x-3 px-3 py-2.5 text-gray-700 rounded-lg hover:bg-primary-50 hover:text-primary-700 transition-colors duration-200;
+  @apply flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium
+         text-primary-200/80 
+         hover:bg-white/[0.08] hover:text-white 
+         transition-all duration-200;
 }
 
 .nav-item-active {
-  @apply bg-primary-100 text-primary-700 font-medium;
+  @apply bg-white/[0.12] text-white font-semibold;
+  border-left: 3px solid #F5B820;
+  padding-left: 9px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Section Labels */
+.nav-section-label {
+  @apply px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-primary-300/50;
 }
 </style>

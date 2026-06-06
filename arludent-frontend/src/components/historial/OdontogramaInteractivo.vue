@@ -1,14 +1,16 @@
 <template>
   <div class="space-y-6">
     <!-- Header profesional -->
-    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 text-white">
-      <div class="flex justify-between items-center">
+    <div class="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 rounded-2xl p-5 text-white overflow-hidden shadow-primary">
+      <!-- Subtle pattern overlay -->
+      <div class="absolute inset-0 opacity-[0.07]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;20&quot; height=&quot;20&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Ccircle cx=&quot;2&quot; cy=&quot;2&quot; r=&quot;1&quot; fill=&quot;white&quot;/%3E%3C/svg%3E'); background-size: 20px 20px;"></div>
+      <div class="relative flex justify-between items-center">
         <div>
-          <h3 class="text-lg font-semibold">Odontograma Interactivo</h3>
-          <p v-if="!soloLectura" class="text-sm text-blue-100">Haz clic en cualquier diente para registrar su estado</p>
-          <p v-else class="text-sm text-blue-100">Estado actual de tu salud dental</p>
+          <h3 class="text-lg font-semibold tracking-tight">Odontograma Interactivo</h3>
+          <p v-if="!soloLectura" class="text-sm text-primary-100 mt-0.5">Haz clic en cualquier diente para registrar su estado</p>
+          <p v-else class="text-sm text-primary-100 mt-0.5">Estado actual de tu salud dental</p>
         </div>
-        <div class="text-right text-sm text-blue-100">
+        <div class="text-right text-sm text-primary-100 space-y-0.5">
           <div>Total registros: {{ piezasDentales.length }}</div>
           <div>Última actualización: {{ ultimaActualizacion }}</div>
         </div>
@@ -16,46 +18,50 @@
     </div>
 
     <!-- Leyenda mejorada -->
-    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-      <h4 class="text-sm font-semibold text-gray-700 mb-3">Estados Dentales</h4>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div class="flex items-center space-x-2 p-2 bg-green-50 rounded-lg border border-green-200">
-          <div class="w-5 h-5 bg-green-100 border-2 border-green-400 rounded-full"></div>
-          <span class="text-sm font-medium text-green-700">Sano</span>
+    <div class="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-xl p-5 shadow-soft">
+      <h4 class="text-sm font-semibold text-gray-700 mb-3 tracking-wide uppercase">Estados Dentales</h4>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="flex items-center space-x-2.5 px-3 py-2.5 bg-emerald-50/60 rounded-xl ring-1 ring-inset ring-emerald-200/80">
+          <div class="w-4 h-4 rounded-full bg-[#FFF8F0] ring-2 ring-[#D4C5B0] flex-shrink-0"></div>
+          <span class="text-sm font-medium text-emerald-700">Sano</span>
         </div>
-        <div class="flex items-center space-x-2 p-2 bg-red-50 rounded-lg border border-red-200">
-          <div class="w-5 h-5 bg-red-100 border-2 border-red-400 rounded-full"></div>
+        <div class="flex items-center space-x-2.5 px-3 py-2.5 bg-red-50/60 rounded-xl ring-1 ring-inset ring-red-200/80">
+          <div class="w-4 h-4 rounded-full bg-red-200 ring-2 ring-red-400 flex-shrink-0"></div>
           <span class="text-sm font-medium text-red-700">Cariado</span>
         </div>
-        <div class="flex items-center space-x-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
-          <div class="w-5 h-5 bg-blue-100 border-2 border-blue-400 rounded-full"></div>
-          <span class="text-sm font-medium text-blue-700">Restaurado</span>
+        <div class="flex items-center space-x-2.5 px-3 py-2.5 bg-primary-50/60 rounded-xl ring-1 ring-inset ring-primary-200/80">
+          <div class="w-4 h-4 rounded-full bg-primary-100 ring-2 ring-primary-400 flex-shrink-0"></div>
+          <span class="text-sm font-medium text-primary-700">Restaurado</span>
         </div>
-        <div class="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
-          <div class="w-5 h-5 bg-gray-200 border-2 border-gray-400 rounded-full"></div>
-          <span class="text-sm font-medium text-gray-700">Ausente</span>
+        <div class="flex items-center space-x-2.5 px-3 py-2.5 bg-gray-50/60 rounded-xl ring-1 ring-inset ring-gray-200/80">
+          <div class="w-4 h-4 rounded-full bg-gray-200 ring-2 ring-gray-400 flex-shrink-0"></div>
+          <span class="text-sm font-medium text-gray-600">Ausente</span>
         </div>
-        <div class="flex items-center space-x-2 p-2 bg-purple-50 rounded-lg border border-purple-200">
-          <div class="w-5 h-5 bg-purple-100 border-2 border-purple-400 rounded-full"></div>
-          <span class="text-sm font-medium text-purple-700">Prótesis</span>
+        <div class="flex items-center space-x-2.5 px-3 py-2.5 bg-violet-50/60 rounded-xl ring-1 ring-inset ring-violet-200/80">
+          <div class="w-4 h-4 rounded-full bg-violet-100 ring-2 ring-violet-400 flex-shrink-0"></div>
+          <span class="text-sm font-medium text-violet-700">Prótesis</span>
         </div>
       </div>
     </div>
 
     <!-- Odontograma Visual mejorado con formas realistas de dientes -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+    <div class="bg-gradient-to-b from-white to-slate-50 border border-gray-100 rounded-2xl p-8 shadow-soft">
       <!-- Arcada Superior con diseño mejorado -->
       <div class="mb-12">
-        <h4 class="text-center text-lg font-semibold text-gray-700 mb-6 flex items-center justify-center">
-          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>
+        <h4 class="text-center text-base font-semibold text-primary-700 mb-6 flex items-center justify-center">
+          <!-- Dental arch icon -->
+          <svg class="w-5 h-5 mr-2 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 14c0-5.5 3.5-10 8-10s8 4.5 8 10"/>
+            <path d="M7.5 12a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
+            <path d="M12 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
+            <path d="M16.5 12a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
           </svg>
           Arcada Superior
         </h4>
         
         <div class="relative">
           <!-- Línea curva superior para simular encía -->
-          <div class="absolute inset-x-0 top-0 h-3 bg-gradient-to-r from-transparent via-pink-200 to-transparent rounded-full opacity-50"></div>
+          <div class="absolute inset-x-0 top-0 h-3 bg-gradient-to-r from-transparent via-[#FFB5B5] to-transparent rounded-full opacity-60"></div>
           
           <!-- Dientes superiores en forma de arco -->
           <div class="flex justify-center pt-4">
@@ -65,7 +71,7 @@
                    class="flex flex-col items-center relative group">
                 <button
                   @click="editarDiente(num.toString())"
-                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded"
+                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 rounded tooth-hover"
                 >
                   <svg :width="getSVGWidth(num)" :height="64" viewBox="0 0 48 64" class="drop-shadow-md">
                     <!-- Corona del diente -->
@@ -86,24 +92,24 @@
                     <!-- Número del diente -->
                     <text x="24" y="28" text-anchor="middle" class="text-xs font-bold fill-gray-700">{{ num }}</text>
                     <!-- Indicador de tratamiento -->
-                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="12" r="4" class="fill-yellow-400" />
+                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="12" r="4" class="fill-accent-400" />
                   </svg>
                 </button>
                 <!-- Tooltip al pasar el mouse -->
                 <div class="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-64">
-                  <div class="bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl">
+                  <div class="bg-primary-950 backdrop-blur-xl text-white text-xs rounded-xl p-3 shadow-xl">
                     <div class="font-bold mb-1">Diente {{ num }} - {{ obtenerTipoDiente(num) }}</div>
                     <div class="space-y-1 text-xs">
                       <div><span class="font-semibold">Estado:</span> {{ obtenerEstadoInfo(num.toString()).label }}</div>
                       <div v-if="obtenerEstadoInfo(num.toString()).tratamiento">
                         <span class="font-semibold">Tratamiento:</span> {{ obtenerEstadoInfo(num.toString()).tratamiento }}
                       </div>
-                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-gray-700 pt-1 mt-1">
+                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-primary-800 pt-1 mt-1">
                         {{ obtenerEstadoInfo(num.toString()).comentario }}
                       </div>
                     </div>
                     <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                      <div class="border-8 border-transparent border-t-gray-900"></div>
+                      <div class="border-8 border-transparent border-t-primary-950"></div>
                     </div>
                   </div>
                 </div>
@@ -115,7 +121,7 @@
                    class="flex flex-col items-center relative group">
                 <button
                   @click="editarDiente(num.toString())"
-                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded"
+                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 rounded tooth-hover"
                 >
                   <svg :width="getSVGWidth(num)" :height="64" viewBox="0 0 48 64" class="drop-shadow-md">
                     <!-- Corona del diente -->
@@ -136,24 +142,24 @@
                     <!-- Número del diente -->
                     <text x="24" y="28" text-anchor="middle" class="text-xs font-bold fill-gray-700">{{ num }}</text>
                     <!-- Indicador de tratamiento -->
-                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="12" r="4" class="fill-yellow-400" />
+                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="12" r="4" class="fill-accent-400" />
                   </svg>
                 </button>
                 <!-- Tooltip al pasar el mouse -->
                 <div class="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-64">
-                  <div class="bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl">
+                  <div class="bg-primary-950 backdrop-blur-xl text-white text-xs rounded-xl p-3 shadow-xl">
                     <div class="font-bold mb-1">Diente {{ num }} - {{ obtenerTipoDiente(num) }}</div>
                     <div class="space-y-1 text-xs">
                       <div><span class="font-semibold">Estado:</span> {{ obtenerEstadoInfo(num.toString()).label }}</div>
                       <div v-if="obtenerEstadoInfo(num.toString()).tratamiento">
                         <span class="font-semibold">Tratamiento:</span> {{ obtenerEstadoInfo(num.toString()).tratamiento }}
                       </div>
-                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-gray-700 pt-1 mt-1">
+                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-primary-800 pt-1 mt-1">
                         {{ obtenerEstadoInfo(num.toString()).comentario }}
                       </div>
                     </div>
                     <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                      <div class="border-8 border-transparent border-t-gray-900"></div>
+                      <div class="border-8 border-transparent border-t-primary-950"></div>
                     </div>
                   </div>
                 </div>
@@ -167,9 +173,9 @@
       <!-- Separador central -->
       <div class="flex justify-center items-center mb-8">
         <div class="flex items-center space-x-4">
-          <div class="w-24 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
-          <span class="text-sm text-gray-500 font-medium">LÍNEA MEDIA</span>
-          <div class="w-24 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-primary-300 to-transparent"></div>
+          <span class="text-xs text-primary-400 font-semibold tracking-[0.2em]">LÍNEA MEDIA</span>
+          <div class="w-32 h-px bg-gradient-to-r from-transparent via-primary-300 to-transparent"></div>
         </div>
       </div>
 
@@ -185,7 +191,7 @@
                 <span class="text-xs text-gray-500 mb-1">{{ obtenerTipoDiente(num) }}</span>
                 <button
                   @click="editarDiente(num.toString())"
-                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded"
+                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 rounded tooth-hover"
                 >
                   <svg :width="getSVGWidth(num)" :height="64" viewBox="0 0 48 64" class="drop-shadow-md">
                     <!-- Raíz del diente (en la parte superior para dientes inferiores) -->
@@ -204,26 +210,26 @@
                       stroke-width="2"
                     />
                     <!-- Indicador de tratamiento -->
-                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="52" r="4" class="fill-yellow-400" />
+                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="52" r="4" class="fill-accent-400" />
                     <!-- Número del diente -->
                     <text x="24" y="42" text-anchor="middle" class="text-xs font-bold fill-gray-700">{{ num }}</text>
                   </svg>
                 </button>
                 <!-- Tooltip al pasar el mouse -->
                 <div class="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-64">
-                  <div class="bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl">
+                  <div class="bg-primary-950 backdrop-blur-xl text-white text-xs rounded-xl p-3 shadow-xl">
                     <div class="font-bold mb-1">Diente {{ num }} - {{ obtenerTipoDiente(num) }}</div>
                     <div class="space-y-1 text-xs">
                       <div><span class="font-semibold">Estado:</span> {{ obtenerEstadoInfo(num.toString()).label }}</div>
                       <div v-if="obtenerEstadoInfo(num.toString()).tratamiento">
                         <span class="font-semibold">Tratamiento:</span> {{ obtenerEstadoInfo(num.toString()).tratamiento }}
                       </div>
-                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-gray-700 pt-1 mt-1">
+                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-primary-800 pt-1 mt-1">
                         {{ obtenerEstadoInfo(num.toString()).comentario }}
                       </div>
                     </div>
                     <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 -mb-1">
-                      <div class="border-8 border-transparent border-b-gray-900"></div>
+                      <div class="border-8 border-transparent border-b-primary-950"></div>
                     </div>
                   </div>
                 </div>
@@ -235,7 +241,7 @@
                 <span class="text-xs text-gray-500 mb-1">{{ obtenerTipoDiente(num) }}</span>
                 <button
                   @click="editarDiente(num.toString())"
-                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded"
+                  class="relative transition-all duration-200 hover:scale-110 hover:z-10 focus:outline-none focus:ring-4 focus:ring-primary-300 rounded tooth-hover"
                 >
                   <svg :width="getSVGWidth(num)" :height="64" viewBox="0 0 48 64" class="drop-shadow-md">
                     <!-- Raíz del diente -->
@@ -254,26 +260,26 @@
                       stroke-width="2"
                     />
                     <!-- Indicador de tratamiento -->
-                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="52" r="4" class="fill-yellow-400" />
+                    <circle v-if="tieneTratamiento(num.toString())" cx="38" cy="52" r="4" class="fill-accent-400" />
                     <!-- Número del diente -->
                     <text x="24" y="42" text-anchor="middle" class="text-xs font-bold fill-gray-700">{{ num }}</text>
                   </svg>
                 </button>
                 <!-- Tooltip al pasar el mouse -->
                 <div class="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-64">
-                  <div class="bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl">
+                  <div class="bg-primary-950 backdrop-blur-xl text-white text-xs rounded-xl p-3 shadow-xl">
                     <div class="font-bold mb-1">Diente {{ num }} - {{ obtenerTipoDiente(num) }}</div>
                     <div class="space-y-1 text-xs">
                       <div><span class="font-semibold">Estado:</span> {{ obtenerEstadoInfo(num.toString()).label }}</div>
                       <div v-if="obtenerEstadoInfo(num.toString()).tratamiento">
                         <span class="font-semibold">Tratamiento:</span> {{ obtenerEstadoInfo(num.toString()).tratamiento }}
                       </div>
-                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-gray-700 pt-1 mt-1">
+                      <div v-if="obtenerEstadoInfo(num.toString()).comentario" class="border-t border-primary-800 pt-1 mt-1">
                         {{ obtenerEstadoInfo(num.toString()).comentario }}
                       </div>
                     </div>
                     <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 -mb-1">
-                      <div class="border-8 border-transparent border-b-gray-900"></div>
+                      <div class="border-8 border-transparent border-b-primary-950"></div>
                     </div>
                   </div>
                 </div>
@@ -282,12 +288,16 @@
           </div>
           
           <!-- Línea curva inferior para simular encía -->
-          <div class="absolute inset-x-0 bottom-0 h-3 bg-gradient-to-r from-transparent via-pink-200 to-transparent rounded-full opacity-50"></div>
+          <div class="absolute inset-x-0 bottom-0 h-3 bg-gradient-to-r from-transparent via-[#FFB5B5] to-transparent rounded-full opacity-60"></div>
         </div>
         
-        <h4 class="text-center text-lg font-semibold text-gray-700 mt-6 flex items-center justify-center">
-          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 18C5.58 18 2 14.42 2 10s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/>
+        <h4 class="text-center text-base font-semibold text-primary-700 mt-6 flex items-center justify-center">
+          <!-- Dental arch icon (inverted) -->
+          <svg class="w-5 h-5 mr-2 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 10c0 5.5 3.5 10 8 10s8-4.5 8-10"/>
+            <path d="M7.5 15a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
+            <path d="M12 17a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
+            <path d="M16.5 15a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="currentColor" stroke="none"/>
           </svg>
           Arcada Inferior
         </h4>
@@ -295,16 +305,16 @@
     </div>
 
     <!-- Tabla de Registros (solo para médicos) -->
-    <div v-if="!soloLectura && piezasDentales.length > 0" class="bg-gray-50 rounded-lg p-4">
+    <div v-if="!soloLectura && piezasDentales.length > 0" class="bg-slate-50/80 rounded-2xl p-5">
       <h4 class="font-semibold text-gray-900 mb-3">Registros Dentales</h4>
       <div class="space-y-2">
         <div v-for="pieza in piezasDentales" :key="pieza.id_odontograma"
-             class="bg-white p-3 rounded border border-gray-200 text-sm">
+             class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm text-sm">
           <div class="flex justify-between items-start">
             <div class="flex-1">
               <span class="font-semibold">Diente {{ pieza.pieza }}</span>
               <span :class="[
-                'ml-2 px-2 py-0.5 rounded text-xs font-medium',
+                'ml-2 px-2 py-0.5 rounded-lg text-xs font-medium ring-1 ring-inset',
                 obtenerClaseEstado(pieza.estado_pieza)
               ]">
                 {{ obtenerLabelEstado(pieza.estado_pieza) }}
@@ -316,7 +326,7 @@
                 {{ pieza.comentario }}
               </p>
             </div>
-            <button @click="editarDiente(pieza.pieza)" class="text-blue-600 hover:text-blue-800">
+            <button @click="editarDiente(pieza.pieza)" class="text-primary-500 hover:text-primary-700 transition-colors">
               <Edit class="w-4 h-4" />
             </button>
           </div>
@@ -325,21 +335,21 @@
     </div>
 
     <!-- Modal Editar Diente -->
-    <div v-if="modalAbierto" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center" @click.self="cerrarModal">
-      <div class="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
+    <div v-if="modalAbierto" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center" @click.self="cerrarModal">
+      <div class="relative bg-white rounded-2xl shadow-soft-xl p-6 w-full max-w-md animate-fade-in-up">
+        <div class="flex justify-between items-center mb-5">
           <h3 class="text-xl font-bold text-gray-900">Diente {{ dienteSeleccionado }}</h3>
-          <button @click="cerrarModal" class="text-gray-400 hover:text-gray-600">
+          <button @click="cerrarModal" class="text-gray-400 hover:text-gray-600 transition-colors">
             <X class="w-6 h-6" />
           </button>
         </div>
 
-        <form @submit.prevent="guardarDiente" class="space-y-4">
+        <form @submit.prevent="guardarDiente" class="space-y-5">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Estado del Diente</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado del Diente</label>
             <select
               v-model="formDiente.estado_pieza"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-shadow"
               required
             >
               <option value="sano">Sano</option>
@@ -351,26 +361,26 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tratamiento Asociado</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Tratamiento Asociado</label>
             <input
               v-model="formDiente.tratamiento_asociado"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-shadow"
               placeholder="Ej: Obturación, Endodoncia, etc."
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Comentarios</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Comentarios</label>
             <textarea
               v-model="formDiente.comentario"
               rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-shadow"
               placeholder="Observaciones adicionales..."
             ></textarea>
           </div>
 
-          <div class="flex justify-end space-x-3 pt-4 border-t">
+          <div class="flex justify-end space-x-3 pt-5 border-t border-gray-100">
             <Button variant="secondary" @click="cerrarModal">
               Cancelar
             </Button>
@@ -519,52 +529,54 @@ const obtenerEstadoInfo = (pieza: string) => {
   }
 }
 
-// Funciones para obtener colores SVG
+// Funciones para obtener colores SVG - Realistic tooth colors
 const obtenerColorFill = (pieza: string) => {
   const registro = props.piezasDentales.find(p => p.pieza === pieza)
-  if (!registro) return 'fill-green-100'
+  if (!registro) return 'fill-[#FFF8F0]'
   
   switch (registro.estado_pieza) {
     case 'sano':
-      return 'fill-green-100'
+      return 'fill-[#FFF8F0]'
     case 'cariado':
-      return 'fill-red-100'
+      return 'fill-red-200'
     case 'restaurado':
-      return 'fill-blue-100'
+      return 'fill-primary-100'
     case 'ausente':
-      return 'fill-gray-300'
+      return 'fill-gray-200'
     case 'protesis':
-      return 'fill-purple-100'
+      return 'fill-violet-100'
     default:
-      return 'fill-green-100'
+      return 'fill-[#FFF8F0]'
   }
 }
 
 const obtenerColorStroke = (pieza: string) => {
   const registro = props.piezasDentales.find(p => p.pieza === pieza)
-  if (!registro) return '#4ade80'
+  if (!registro) return '#D4C5B0'
   
   switch (registro.estado_pieza) {
     case 'sano':
-      return '#4ade80'
+      return '#D4C5B0'
     case 'cariado':
-      return '#f87171'
+      return '#ef4444'
     case 'restaurado':
-      return '#60a5fa'
+      return '#3EA6E3'
     case 'ausente':
       return '#9ca3af'
     case 'protesis':
-      return '#c084fc'
+      return '#a78bfa'
     default:
-      return '#4ade80'
+      return '#D4C5B0'
   }
 }
 
 const obtenerColorRoot = (pieza: string) => {
   const registro = props.piezasDentales.find(p => p.pieza === pieza)
-  if (!registro || registro.estado_pieza === 'ausente') return 'fill-gray-200'
+  if (!registro) return 'fill-[#FFF3E6]'
+  if (registro.estado_pieza === 'ausente') return 'fill-gray-200'
   
   // La raíz siempre es más clara que la corona
+  if (registro.estado_pieza === 'sano') return 'fill-[#FFF3E6]'
   return 'fill-white'
 }
 
@@ -707,5 +719,14 @@ const guardarDiente = async () => {
 <style scoped>
 .grid-cols-16 {
   grid-template-columns: repeat(16, minmax(0, 1fr));
+}
+
+/* Realistic tooth SVG styling */
+.tooth-hover {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.2s ease;
+}
+.tooth-hover:hover {
+  filter: drop-shadow(0 4px 8px rgba(14, 111, 181, 0.2));
 }
 </style>
