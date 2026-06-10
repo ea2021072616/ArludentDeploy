@@ -21,10 +21,15 @@ COPY . .
 ARG VITE_API_URL=http://localhost:8080/api
 ARG VITE_APP_NAME="Arludent"
 ARG VITE_RECAPTCHA_SITE_KEY
+ARG VITE_AI_MICROSERVICE_URL=http://localhost:8001/api/v1
 
 ENV VITE_API_URL=${VITE_API_URL}
 ENV VITE_APP_NAME=${VITE_APP_NAME}
 ENV VITE_RECAPTCHA_SITE_KEY=${VITE_RECAPTCHA_SITE_KEY}
+ENV VITE_AI_MICROSERVICE_URL=${VITE_AI_MICROSERVICE_URL}
+
+# Eliminar archivo .env local para que Vite tome las variables del SO (inyectadas arriba)
+RUN rm -f .env
 
 # Build de producción
 RUN npm run build-only
