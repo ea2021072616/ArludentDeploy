@@ -69,13 +69,14 @@ services:
       QUEUE_CONNECTION: database
 
       # Correo
-      MAIL_MAILER: smtp
+      MAIL_MAILER: resend
+      RESEND_API_KEY: ${RESEND_API_KEY}
       MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
       MAIL_PORT: ${MAIL_PORT:-587}
       MAIL_USERNAME: ${MAIL_USERNAME:-erickhc1331@gmail.com}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_ENCRYPTION: tls
-      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-erickhc1331@gmail.com}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-onboarding@resend.dev}
       MAIL_FROM_NAME: "Arludent Tacna"
 
       # CORS
