@@ -148,7 +148,6 @@ export const useNotification = () => {
       text,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      allowEnterKey: false,
       showConfirmButton: false,
       didOpen: () => {
         Swal.showLoading()
