@@ -450,6 +450,26 @@ class HistorialClinicoService {
     const response = await apiClient.get('/clinica/catalogo-tratamientos')
     return response.data.data
   }
+
+  /**
+   * Descargar historial clínico como PDF
+   */
+  async descargarPdf(idHistorial: number): Promise<void> {
+    const response = await apiClient.get(`/clinica/historiales/${idHistorial}/pdf`, {
+      responseType: 'blob'
+    })
+
+    // Crear URL temporal y descargar
+    const blob = new Blob([response.data], { type: 'application/pdf' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `historial_clinico_${idHistorial}.pdf`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  }
 }
 
 // Helper para crear historial clínico con datos completos

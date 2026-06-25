@@ -24,6 +24,7 @@ Route::prefix('clinica')->middleware(['auth:api'])->group(function () {
         Route::post('/', [HistorialClinicoController::class, 'store']);
         Route::get('/{id}', [HistorialClinicoController::class, 'show']);
         Route::put('/{id}', [HistorialClinicoController::class, 'update']);
+        Route::get('/{id}/pdf', [HistorialClinicoController::class, 'exportarPdf']);
 
         // Detalles de consultas
         Route::post('/{id}/detalles', [DetalleHistorialController::class, 'store']);

@@ -70,6 +70,7 @@ const router = createRouter({
         if (authStore.hasRole('medico')) return next({ name: 'medico-dashboard' })
         if (authStore.hasRole('secretaria')) return next({ name: 'secretaria-dashboard' })
         if (authStore.hasRole('paciente') || authStore.hasRole('usuario')) return next({ name: 'paciente-dashboard' })
+        if (authStore.hasRole('externo')) return next({ name: 'externo-dashboard' })
         return next()
       }
     },
@@ -98,6 +99,12 @@ const router = createRouter({
       name: 'paciente-dashboard',
       component: () => import('@/views/Dashboards/PacienteDashboardView.vue'),
       meta: { requiresAuth: true, roles: ['paciente', 'usuario'] }
+    },
+    {
+      path: '/externo/dashboard',
+      name: 'externo-dashboard',
+      component: () => import('@/views/Dashboards/ExternoDashboardView.vue'),
+      meta: { requiresAuth: true, roles: ['externo'] }
     },
 
     // ============ PERFIL ============

@@ -1652,8 +1652,15 @@ const volver = () => {
   router.push('/historial-clinico')
 }
 
-const imprimirHistorial = () => {
-  window.print()
+const imprimirHistorial = async () => {
+  if (!historial.value) return
+
+  try {
+    await historialClinicoService.descargarPdf(historial.value.id_historial)
+  } catch (error) {
+    console.error('Error al generar PDF:', error)
+    Swal.fire('Error', 'No se pudo generar el PDF del historial clínico', 'error')
+  }
 }
 
 const cargarCatalogoTratamientos = async () => {

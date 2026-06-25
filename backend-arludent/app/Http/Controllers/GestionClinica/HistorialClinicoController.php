@@ -458,4 +458,54 @@ class HistorialClinicoController extends Controller
             'historial' => $historial
         ]);
     }
+
+    /**
+     * Exportar historial clínico como PDF
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportarPdf($id)
+    {
+        /** @var \App\Models\User $usuario */
+        $usuario = Auth::user();
+
+        $medico = Medico::where('id_usuario', $usuario->id_usuario)->first();
+
+        if (!$medico) {
+            return $this->errorResponse('No se encontró el perfil de médico.', 404);
+        }
+
+        $historial = HistorialClinico::with([
+            'paciente.usuario:id_usuario,telefono,correo',
+            'medicoResponsable',
+            'detalles.realizadoPor',
+            'tratamientos.tratamiento',
+            'prescripciones'
+        ])->find($id);
+
+        if (!$historial) {
+            return $this->errorResponse('Historial clínico no encontrado.', 404);
+        }
+
+        // Verificar permisos según tipo de médico
+        if (!in_array($medico->tipo_medico, ['cabecera_manana', 'cabecera_tarde'])) {
+            $haAtendido = Cita::where('id_medico', $medico->id_medico)
+                ->where('id_paciente', $historial->id_paciente)
+                ->exists();
+
+            if (!$haAtendido) {
+                return $this->errorResponse('No tiene permisos para exportar este historial clínico.', 403);
+            }
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('historial.historial_clinico', [
+            'historial' => $historial
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+
+        $filename = 'historial_clinico_' . ($historial->codigo_historial ?? $historial->id_historial) . '.pdf';
+
+        return $pdf->download($filename);
+    }
 }
