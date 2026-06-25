@@ -7,6 +7,7 @@ use App\Models\Paciente;
 use App\Models\HistorialClinico;
 use App\Models\Rol;
 use App\Models\LogActividad;
+use App\Models\Cita;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -106,6 +107,13 @@ class HistorialClinicoService
                 'descripcion' => "Historial clínico creado. Código: {$codigoHistorial}. Usuario convertido a paciente.",
                 'ip_usuario' => request()->ip(),
             ]);
+
+            // 6. Actualizar citas existentes del usuario externo al nuevo paciente
+            Cita::where('id_usuario_externo', $usuario->id_usuario)
+                ->update([
+                    'id_paciente' => $paciente->id_paciente,
+                    'id_usuario_externo' => null
+                ]);
 
             DB::commit();
 
