@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\LogActividad;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Observer de Actividad
@@ -18,7 +19,7 @@ class ActivityObserver
     public function created(User $user): void
     {
         LogActividad::create([
-            'id_usuario' => $user->id_usuario,
+            'id_usuario' => Auth::id(),
             'accion' => 'usuario_creado',
             'modulo_afectado' => 'usuarios',
             'registro_afectado' => $user->id_usuario,
@@ -37,7 +38,7 @@ class ActivityObserver
 
         if (isset($cambiosImportantes['password_hash'])) {
             LogActividad::create([
-                'id_usuario' => $user->id_usuario,
+                'id_usuario' => Auth::id(),
                 'accion' => 'password_actualizado',
                 'modulo_afectado' => 'usuarios',
                 'registro_afectado' => $user->id_usuario,
@@ -48,7 +49,7 @@ class ActivityObserver
 
         if (isset($cambiosImportantes['estado'])) {
             LogActividad::create([
-                'id_usuario' => $user->id_usuario,
+                'id_usuario' => Auth::id(),
                 'accion' => 'estado_cambiado',
                 'modulo_afectado' => 'usuarios',
                 'registro_afectado' => $user->id_usuario,
@@ -60,7 +61,7 @@ class ActivityObserver
         if (isset($cambiosImportantes['mfa_enabled'])) {
             $accion = $user->mfa_enabled ? 'mfa_activado' : 'mfa_desactivado';
             LogActividad::create([
-                'id_usuario' => $user->id_usuario,
+                'id_usuario' => Auth::id(),
                 'accion' => $accion,
                 'modulo_afectado' => 'usuarios',
                 'registro_afectado' => $user->id_usuario,
@@ -76,7 +77,7 @@ class ActivityObserver
     public function deleted(User $user): void
     {
         LogActividad::create([
-            'id_usuario' => $user->id_usuario,
+            'id_usuario' => Auth::id(),
             'accion' => 'usuario_eliminado',
             'modulo_afectado' => 'usuarios',
             'registro_afectado' => $user->id_usuario,

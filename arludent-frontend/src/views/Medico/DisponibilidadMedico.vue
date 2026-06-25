@@ -201,11 +201,13 @@
                 </div>
 
                 <div class="text-sm text-gray-900 mb-1">
-                  <span v-if="disp.hora_inicio && disp.hora_fin">
-                    {{ disp.hora_inicio }} - {{ disp.hora_fin }}
+                  <span v-if="disp.fecha_inicio && disp.fecha_fin">
+                    <span v-if="disp.fecha_inicio === disp.fecha_fin">{{ formatDate(disp.fecha_inicio) }}</span>
+                    <span v-else>Del {{ formatDate(disp.fecha_inicio) }} al {{ formatDate(disp.fecha_fin) }}</span>
+                    <span v-if="disp.hora_inicio && disp.hora_fin"> | {{ disp.hora_inicio }} - {{ disp.hora_fin }}</span>
                   </span>
-                  <span v-else-if="disp.fecha_inicio && disp.fecha_fin">
-                    Del {{ formatDate(disp.fecha_inicio) }} al {{ formatDate(disp.fecha_fin) }}
+                  <span v-else-if="disp.hora_inicio && disp.hora_fin">
+                    {{ disp.hora_inicio }} - {{ disp.hora_fin }}
                   </span>
                   <span v-else>
                     Horario semanal recurrente

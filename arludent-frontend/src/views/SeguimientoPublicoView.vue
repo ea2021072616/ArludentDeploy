@@ -25,7 +25,7 @@
     </div>
 
     <!-- Ya Respondido -->
-    <div v-else-if="seguimiento && seguimiento.estado === 'respondido'" class="max-w-2xl mx-auto">
+    <div v-else-if="seguimiento && (seguimiento.estado === 'respondido' || seguimiento.estado === 'realizado')" class="max-w-2xl mx-auto">
       <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
         <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-12 text-center">
           <CheckCircle class="h-20 w-20 text-white mx-auto mb-4" />
@@ -252,8 +252,9 @@ const cargarSeguimiento = async () => {
     cargando.value = true
     error.value = ''
 
-    const response = await axios.get(`/seguimiento/${token}`)
-    seguimiento.value = response.data.data
+    const baseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api').replace('/api', '')
+    const response = await axios.get(`${baseUrl}/seguimiento/${token}`)
+    seguimiento.value = response.data.seguimiento
 
   } catch (err: any) {
     console.error('Error al cargar seguimiento:', err)
@@ -290,7 +291,8 @@ const enviarRespuesta = async () => {
     errorEnvio.value = ''
     exitoEnvio.value = false
 
-    await axios.post(`/seguimiento/${token}/responder`, formulario.value)
+    const baseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api').replace('/api', '')
+    await axios.post(`${baseUrl}/seguimiento/${token}/responder`, formulario.value)
 
     exitoEnvio.value = true
 
