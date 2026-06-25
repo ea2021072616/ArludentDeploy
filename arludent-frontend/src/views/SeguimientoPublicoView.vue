@@ -292,7 +292,26 @@ const enviarRespuesta = async () => {
     exitoEnvio.value = false
 
     const baseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api').replace('/api', '')
-    await axios.post(`${baseUrl}/seguimiento/${token}/responder`, formulario.value)
+    
+    // Adaptar el payload al formato que espera el backend
+    const payload = {
+      estado_paciente: formulario.value.estado_paciente === 'excelente' ? 'muy_bien' : formulario.value.estado_paciente,
+      descripcion: formulario.value.observaciones_paciente || 'Sin observaciones adicionales',
+      sintomas: [] as string[]
+    }
+
+    if (formulario.value.sintomas_reportados) {
+      payload.sintomas.push(formulario.value.sintomas_reportados)
+    }
+    if (formulario.value.necesita_revision) {
+      payload.sintomas.push('El paciente solicita agendar una cita de revisión.')
+      // Si el paciente pide revisión, forzar al menos estado 'regular' para que el backend lo marque con problemas
+      if (payload.estado_paciente === 'muy_bien' || payload.estado_paciente === 'bien') {
+        payload.estado_paciente = 'regular'
+      }
+    }
+
+    await axios.post(`${baseUrl}/seguimiento/${token}/responder`, payload)
 
     exitoEnvio.value = true
 

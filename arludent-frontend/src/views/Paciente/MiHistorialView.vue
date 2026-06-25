@@ -420,7 +420,7 @@
           <Card>
             <OdontogramaInteractivo
               :id-historial="historial.id_historial"
-              :piezas-dentales="historial.odontograma || []"
+              :odontograma-state="historial.odontograma_state"
               :solo-lectura="true"
             />
           </Card>

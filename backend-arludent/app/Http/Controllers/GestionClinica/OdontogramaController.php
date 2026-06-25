@@ -42,13 +42,14 @@ class OdontogramaController extends Controller
         }
 
         // Verificar permisos
-        $esResponsable = $historial->id_medico_responsable === $medico->id_medico;
-        $haAtendido = Cita::where('id_medico', $medico->id_medico)
-            ->where('id_paciente', $historial->id_paciente)
-            ->exists();
+        if (!in_array($medico->tipo_medico, ['cabecera_manana', 'cabecera_tarde'])) {
+            $haAtendido = Cita::where('id_medico', $medico->id_medico)
+                ->where('id_paciente', $historial->id_paciente)
+                ->exists();
 
-        if (!$esResponsable && !$haAtendido) {
-            return $this->errorResponse('No tiene permisos para ver este odontograma.', 403);
+            if (!$haAtendido) {
+                return $this->errorResponse('No tiene permisos para ver este odontograma.', 403);
+            }
         }
 
         $odontograma = Odontograma::where('id_historial', $idHistorial)->get();
@@ -79,10 +80,8 @@ class OdontogramaController extends Controller
         // Validación
         $validator = Validator::make($request->all(), [
             'id_historial' => 'required|exists:historial_clinico,id_historial',
-            'pieza' => 'required|string|max:10',
-            'estado_pieza' => 'required|in:sano,cariado,restaurado,ausente,protesis,otros',
-            'tratamiento_asociado' => 'nullable|string|max:255',
-            'comentario' => 'nullable|string',
+            'odontograma_state' => 'required|array',
+            'odontograma_image' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -92,39 +91,25 @@ class OdontogramaController extends Controller
         $historial = HistorialClinico::find($request->id_historial);
 
         // Verificar permisos
-        $esResponsable = $historial->id_medico_responsable === $medico->id_medico;
-        if (!$esResponsable) {
-            return $this->errorResponse('No tiene permisos para modificar este odontograma.', 403);
+        if (!in_array($medico->tipo_medico, ['cabecera_manana', 'cabecera_tarde'])) {
+            $haAtendido = Cita::where('id_medico', $medico->id_medico)
+                ->where('id_paciente', $historial->id_paciente)
+                ->exists();
+
+            if (!$haAtendido) {
+                return $this->errorResponse('No tiene permisos para modificar este odontograma.', 403);
+            }
         }
 
-        // Buscar si ya existe la pieza
-        $odontograma = Odontograma::where('id_historial', $request->id_historial)
-            ->where('pieza', $request->pieza)
-            ->first();
-
-        if ($odontograma) {
-            // Actualizar pieza existente
-            $odontograma->update([
-                'estado_pieza' => $request->estado_pieza,
-                'tratamiento_asociado' => $request->tratamiento_asociado,
-                'comentario' => $request->comentario,
-            ]);
-            $mensaje = 'Pieza dental actualizada exitosamente.';
-        } else {
-            // Crear nueva pieza
-            $odontograma = Odontograma::create([
-                'id_historial' => $request->id_historial,
-                'pieza' => $request->pieza,
-                'estado_pieza' => $request->estado_pieza,
-                'tratamiento_asociado' => $request->tratamiento_asociado,
-                'comentario' => $request->comentario,
-            ]);
-            $mensaje = 'Pieza dental registrada exitosamente.';
-        }
+        // Guardar el estado JSON e Imagen
+        $historial->update([
+            'odontograma_state' => $request->odontograma_state,
+            'odontograma_image' => $request->odontograma_image,
+        ]);
 
         return $this->successResponse([
-            'odontograma' => $odontograma
-        ], $mensaje, 201);
+            'historial' => $historial
+        ], 'Odontograma guardado exitosamente.', 200);
     }
 
     /**

@@ -57,6 +57,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'internal.api' => \App\Http\Middleware\InternalApiKeyMiddleware::class,
         ]);
+
+        // Excluir rutas públicas de la protección CSRF (para llamadas API desde el frontend público)
+        $middleware->validateCsrfTokens(except: [
+            'seguimiento/*',
+            'api/*'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

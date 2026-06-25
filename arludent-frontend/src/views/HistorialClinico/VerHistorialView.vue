@@ -474,14 +474,16 @@
             <OdontogramaInteractivo
               v-if="historial && (esRolMedico || esRolAdmin)"
               :idHistorial="historial.id_historial"
-              :piezasDentales="historial.odontograma || []"
+              :odontogramaState="historial.odontograma_state"
               @actualizado="cargarHistorial"
             />
 
             <!-- Odontograma para pacientes (solo visualización) -->
-            <OdontogramaVisualizacion
+            <OdontogramaInteractivo
               v-else-if="historial"
-              :piezasDentales="historial.odontograma || []"
+              :idHistorial="historial.id_historial"
+              :odontogramaState="historial.odontograma_state"
+              :soloLectura="true"
             />
 
             <!-- Diagnósticos y Evaluación (debajo del odontograma) -->
@@ -1212,7 +1214,6 @@ import Modal from '@/components/common/Modal.vue'
 import Button from '@/components/common/Button.vue'
 import InputField from '@/components/common/InputField.vue'
 import OdontogramaInteractivo from '@/components/historial/OdontogramaInteractivo.vue'
-import OdontogramaVisualizacion from '@/components/historial/OdontogramaVisualizacion.vue'
 import ModalAgregarControl from '@/components/historial/ModalAgregarControl.vue'
 import ModalAgregarSeguimiento from '@/components/historial/ModalAgregarSeguimiento.vue'
 import historialClinicoService, { type HistorialClinico } from '@/api/historialClinicoService'

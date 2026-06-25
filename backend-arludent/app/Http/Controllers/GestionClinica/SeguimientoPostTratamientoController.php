@@ -189,8 +189,10 @@ class SeguimientoPostTratamientoController extends Controller
             ]);
         }
 
-        // TODO: Aquí se enviará al microservicio IA para análisis
-        // $this->enviarAnalisisIA($seguimiento, $request->all());
+        // Enviar al microservicio IA para análisis si está habilitado
+        if ($seguimiento->gestionado_por_ia) {
+            $this->enviarAnalisisIA($seguimiento, $request->all());
+        }
 
         return response()->json([
             'message' => 'Gracias por tu respuesta. Hemos registrado tu información.',
@@ -199,12 +201,40 @@ class SeguimientoPostTratamientoController extends Controller
     }
 
     /**
+     * Enviar datos al microservicio de IA para análisis
+     */
+    private function enviarAnalisisIA(SeguimientoPostTratamiento $seguimiento, array $requestData)
+    {
+        try {
+            $aiUrl = env('AI_SERVICE_URL', 'http://127.0.0.1:8001') . '/api/v1/seguimiento/analizar-respuesta';
+            
+            $payload = [
+                'seguimiento_id' => $seguimiento->id_seguimiento,
+                'paciente_nombre' => $seguimiento->paciente->nombres . ' ' . $seguimiento->paciente->apellidos,
+                'tipo_tratamiento' => $seguimiento->cita ? ($seguimiento->cita->motivo_consulta ?? 'Tratamiento Odontológico') : 'Tratamiento Odontológico',
+                'dias_desde_tratamiento' => max(1, \Carbon\Carbon::parse($seguimiento->fecha_seguimiento)->diffInDays(now())),
+                'respuesta' => [
+                    'estado_paciente' => $requestData['estado_paciente'] ?? 'regular',
+                    'sintomas_reportados' => implode(', ', $requestData['sintomas'] ?? []),
+                    'observaciones_paciente' => $requestData['descripcion'] ?? '',
+                    'necesita_revision' => in_array('El paciente solicita agendar una cita de revisión.', $requestData['sintomas'] ?? []) || ($requestData['estado_paciente'] ?? '') === 'mal'
+                ]
+            ];
+
+            \Illuminate\Support\Facades\Http::timeout(30)->post($aiUrl, $payload);
+            
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error al enviar análisis a IA: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Webhook para recibir análisis de IA
      */
     public function webhookIA(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_seguimiento' => 'required|exists:seguimientos_post_tratamiento,id_seguimiento',
+            'seguimiento_id' => 'required|exists:seguimientos_post_tratamiento,id_seguimiento',
             'analisis' => 'required|array',
         ]);
 
@@ -212,7 +242,7 @@ class SeguimientoPostTratamientoController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $seguimiento = SeguimientoPostTratamiento::find($request->id_seguimiento);
+        $seguimiento = SeguimientoPostTratamiento::find($request->seguimiento_id);
         $analisis = $request->analisis;
 
         $seguimiento->update([

@@ -454,8 +454,10 @@ Si el usuario insiste en temas fuera de tu alcance:
             logger.info(f"📨 Procesando mensaje en sesión {session.session_id}")
             logger.debug(f"Mensaje: {message}")
             
-            # Obtener fecha actual para el contexto
-            current_date = datetime.now().strftime("%Y-%m-%d")
+            # Obtener fecha actual para el contexto en la zona horaria de Perú (UTC-5 fijo)
+            from datetime import timezone, timedelta
+            lima_tz = timezone(timedelta(hours=-5))
+            current_date = datetime.now(lima_tz).strftime("%Y-%m-%d")
             
             # Preparar mensaje con contexto de usuario si existe
             input_message = message

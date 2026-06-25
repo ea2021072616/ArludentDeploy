@@ -23,7 +23,9 @@ class SeguimientoPostTratamientoMail extends Mailable
     public function __construct(SeguimientoPostTratamiento $seguimiento)
     {
         $this->seguimiento = $seguimiento;
-        $this->enlaceRespuesta = url('/seguimiento/' . $seguimiento->token_respuesta);
+        $frontendUrl = env('APP_FRONTEND_URL', 'http://localhost:5173');
+        // Asegurarse de que no termine en barra y concatenar
+        $this->enlaceRespuesta = rtrim($frontendUrl, '/') . '/seguimiento/' . $seguimiento->token_respuesta;
     }
 
     /**

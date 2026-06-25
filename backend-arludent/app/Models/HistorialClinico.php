@@ -56,6 +56,8 @@ class HistorialClinico extends Model
         'problema_anestesia',
         'dificultad_abrir_masticar',
         'sensibilidad_dental',
+        'odontograma_state',
+        'odontograma_image',
     ];
 
     /**
@@ -70,6 +72,7 @@ class HistorialClinico extends Model
         'problema_anestesia' => 'boolean',
         'dificultad_abrir_masticar' => 'boolean',
         'sensibilidad_dental' => 'boolean',
+        'odontograma_state' => 'array',
     ];
 
     public function paciente(): BelongsTo

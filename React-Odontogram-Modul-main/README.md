@@ -1,0 +1,1207 @@
+# 🦷 React Odontogram Editor Modul
+
+[![Download](https://img.shields.io/badge/Download-React--Odontogram--Modul-blue?style=for-the-badge&logo=github)](https://github.com/ZoliQua/React-Odontogram-Modul/releases)
+[![Version](https://img.shields.io/badge/version-1.7.0-green?style=for-the-badge)](https://github.com/ZoliQua/React-Odontogram-Modul)
+[![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)](https://github.com/ZoliQua/React-Odontogram-Modul/blob/main/LICENSE)
+
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+---
+
+> 🌐 **Languages / Sprachen / Idiomas / Nyelvek:**  🇬🇧 [English](#-english) | 🇩🇪 [Deutsch](#-deutsch) | 🇪🇸 [Español](#-español) | 🇭🇺 [Magyar](#-magyar)
+
+## 🇬🇧 English
+
+### 📋 Overview
+This project is an interactive, browser-based odontogram editor that supports fast dental charting with a clean UI. It renders layered SVG tooth templates to represent restorations, caries, endodontic status, mobility, and other clinical details, while providing multi-select, selection filters, and predefined status presets.
+
+---
+<img width="1728" height="922" alt="react-odontogram-modul-english-preview" src="https://github.com/user-attachments/assets/0d6e076e-a840-408c-93cc-974e0767aaaf" />
+
+🔗 **Test URL:** https://react-odontogram-modul.vercel.app/
+
+---
+
+### ✨ Key Features
+- 🖱️ Fast selection and multi-select (CMD/CTRL + click)
+- 🦷 Tooth types: permanent, primary (milk), implant, broken variants, crown prep, subgingival
+- 👑 Crown materials: natural, e.max, zircon, metal-ceramic, temporary, telescope, radix
+- 🔩 Implant abutments: healing abutment, locator, locator with prosthesis, bar, bar with prosthesis
+- 🌉 Bridge units: zircon, metal, temporary, removable, bar, bar with prosthesis
+- 🔍 Caries charting on 6 surfaces: mesial, distal, buccal, lingual, occlusal, subcrown
+- 🪥 Filling materials per surface: amalgam, composite, GIC, temporary
+- 🏥 Endodontic states: medicinal filling, root canal filling, incomplete root filling, glass fiber post, metal post, resection, parapulpal pin
+- ⚕️ Modifications: periapical inflammation (inside/outside), periodontal disease, mobility grades (M1/M2/M3)
+- 🏷️ Special indicators: crown needed, crown replacement needed, missing closed gap, extraction plan, bruxism wear/neck wear, fissure sealing, contact point loss
+- 👁️ Occlusal view, wisdom teeth, bone and pulp visibility toggles
+- 🔢 12 selection filters (all, present, permanent, milk, implants, missing, upper/lower, front/molars)
+- 📊 Predefined status presets (reset, primary dentition, mixed dentition, edentulous)
+- 📦 34 predefined restoration templates (bridges, removable dentures, bar dentures with implants)
+- 💾 Status export/import in JSON (version 1.3, with plugin custom states and per-tooth notes)
+- 🔗 HL7 FHIR R4 export (collection Bundle of per-tooth Observations, ISO 3950 tooth coding, hybrid local+SNOMED codings)
+- ✚ Cross/plus surface selection UI (B/M/O/D/L) for caries and fillings
+- 🧱 Per-surface restoration materials (mixed fillings, e.g. buccal amalgam + distal composite)
+- 🖼️ PNG/JPG image export of the chart (downloadable)
+- 🗂️ Consolidated Export dropdown (Status JSON / FHIR / PNG / JPG)
+- 📥 Import dropdown with FHIR import (round-trips exported Bundles)
+- ⏳ Progress overlay during image export
+- 🎓 12-step interactive intro tour
+- 🔢 Three numbering systems (FDI, Universal, Palmer)
+- 🌐 I18n (HU/EN/DE/ES/IT/SK/PL/RU) with language switcher (190+ translation keys per language)
+- 🌗 Dark mode support with toggle button (standalone or controlled by parent app)
+- 🎨 Custom theme configuration (`themeConfig` prop) with CSS custom properties (`--odon-*`)
+- 📱 Mobile touch UX: tap-to-zoom popover, long-press context menu, pinch-to-zoom, WCAG 44px touch targets, arch toggle navigation
+- 🔌 Custom SVG plugin system: inject visual overlays, per-tooth custom state, JSON export/import support
+- ⚠️ State validation warnings for incompatible tooth state combinations
+- 🏷️ Automatic state tooltip on tooth tiles (shows all active states)
+- ♿ Keyboard accessibility (WCAG): ARIA listbox/option roles, Enter/Space selection, arrow key navigation, focus-visible outlines
+- 🔒 Read-only mode: disable all interactions for print/report/view use cases
+- ✨ Selection animations: pulsing dashed border and glowing drop-shadow on selected teeth (with prefers-reduced-motion support)
+- 📝 Per-tooth notes: double-click to add/edit notes, note icon next to tooth number, hover tooltip with note text, JSON export/import
+- 🧪 163 automated tests (Vitest) across 9 test files covering numbering, translations, presets, i18n, App component, theme, touch, plugins and accessibility
+- 📖 TypeDoc API documentation with JSDoc comments on all public exports (`npm run docs`)
+
+### 📦 Modules
+- 🦷 Odontogram grid and tooth tile UI
+- 🎛️ Controls and status panel
+- 🎨 SVG layering engine and templates
+- 🔢 Tooth numbering and label mapping (FDI/Universal/Palmer)
+- 🌐 Localization (HU/EN/DE/ES/IT/SK/PL/RU)
+- 💾 Status export/import
+- 📋 Status extras: predefined restoration templates
+- 🎨 Theme configuration: customizable color palette via `--odon-*` CSS properties
+- 📱 Mobile touch interactions (tap-to-zoom, long-press, pinch-to-zoom, arch toggle)
+- 🔌 Custom SVG plugin system
+- ⚠️ State validation and tooltip system
+- ♿ Keyboard accessibility and ARIA support
+- 🔒 Read-only mode
+- ✨ Selection animations
+- 📝 Per-tooth notes system
+- 🧪 Automated test suite (Vitest + Testing Library)
+
+### 🛠️ UI Controls
+
+**🔝 Topbar:**
+- Language switcher (HU/EN/DE/ES/IT/SK/PL/RU dropdown)
+- Dark mode toggle button (sun/moon icon, switches between light and dark theme)
+- Numbering system switcher (FDI/Universal/Palmer dropdown)
+- Export Status / Import Status buttons
+
+**📊 Chart header:**
+- Occlusal view toggle
+- Wisdom teeth visibility toggle
+- Bone visibility toggle
+- Pulp visibility toggle
+- Clear selection button
+
+**🔍 Selection filters:**
+- Select All / All Present / Permanent / Milk / Implants / All Missing
+- Select Upper / Upper Front 6 / Upper Molars
+- Select Lower / Lower Front 6 / Lower Molars
+
+**📋 Status presets:**
+- Reset All (reset mouth)
+- Primary Dentition
+- Mixed Dentition
+- Edentulous toggle
+
+**📦 Status extras dropdown:**
+- Upper/Lower zircon bridges (12-22, 13-23, 16-26, full arch)
+- Upper/Lower metal bridges (12-22, 13-23, 16-26, full arch)
+- Upper/Lower partial removable dentures
+- Upper/Lower full removable dentures
+- Upper/Lower bar dentures with implants
+
+### 🦷 Tooth Types and States
+
+**Tooth selection (base type):**
+| Value | Description |
+|---|---|
+| `none` | Missing tooth |
+| `tooth-base` | Permanent tooth |
+| `milktooth` | Primary (deciduous) tooth |
+| `implant` | Dental implant |
+| `tooth-crownprep` | Tooth prepared for crown |
+| `tooth-under-gum` | Subgingival (unerupted) tooth |
+
+**Broken tooth variants:**
+`tooth-broken-inicisal`, `tooth-broken-distal-inicisal`, `tooth-broken-distal`, `tooth-broken-mesial-distal-inicisal`, `tooth-broken-mesial-distal`, `tooth-broken-mesial-inicisal`, `tooth-broken-mesial`, `no-tooth-after-extraction`
+
+**Crown materials (permanent teeth):**
+`natural`, `broken`, `radix`, `emax`, `zircon`, `metal`, `temporary`, `telescope`
+
+**Crown materials (implants):**
+`natural` (none), `healing-abutment`, `zircon`, `metal`, `temporary`, `locator`, `locator-prosthesis`, `bar`, `bar-prosthesis`
+
+**Bridge units:**
+`none`, `removable`, `zircon`, `metal`, `temporary`, `bar`, `bar-prosthesis`
+
+**Endodontic options (permanent teeth):**
+`none`, `endo-medical-filling`, `endo-filling`, `endo-filling-incomplete`, `endo-glass-pin`, `endo-metal-pin`
+
+**Endodontic options (milk teeth):**
+`none`, `endo-medical-filling`
+
+**Filling materials (permanent teeth):**
+`amalgam`, `composite`, `gic`, `temporary`
+
+**Filling materials (milk teeth):**
+`composite`, `gic`, `temporary`
+
+**Filling/caries surfaces:**
+`mesial`, `distal`, `buccal`, `lingual`, `occlusal`, `subcrown` (caries only)
+
+**Modifications:**
+`inflammation` (periapical), `parodontal` (periodontal), `mobility` (M1/M2/M3)
+
+**Special indicators:**
+`crownNeeded`, `crownReplace`, `missingClosed`, `extractionPlan`, `extractionWound`, `bridgePillar`, `fissureSealing`, `contactMesial`, `contactDistal`, `bruxismWear`, `bruxismNeckWear`, `pulpInflam`, `endoResection`, `parapulpalPin`
+
+### 🖼️ SVG Template System
+
+**Tooth templates** (in `src/assets/teeth-svgs/`):
+| Template | Teeth using it |
+|---|---|
+| `11.svg` | 11, 12, 21, 22, 31, 32, 41, 42 (incisors) |
+| `13.svg` | 13, 23, 33, 43 (canines) |
+| `14.svg` / `14_occl.svg` | 14, 15, 24, 25, 34, 35, 44, 45 (premolars) |
+| `16.svg` / `16_occl.svg` | 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48 (molars) |
+
+Templates are rotated 180 degrees for the lower jaw and mirrored horizontally for the left side.
+
+**Icon SVGs** (in `src/assets/icon-svgs/`):
+`icon_8.svg` (wisdom), `icon_gum.svg` (bone), `icon_no_selection.svg` (clear), `icon_occl.svg` (occlusal view), `icon_pulp.svg` (pulp)
+
+### 🔢 Numbering Systems
+
+**FDI (ISO 3950):** Adult teeth 11-18, 21-28, 31-38, 41-48. Primary teeth 51-55, 61-65, 71-75, 81-85.
+
+**Universal (USA):** Adult teeth numbered 1-32. Primary teeth lettered A-T.
+
+**Palmer (Zsigmondy-Palmer):** Quadrant + position format (e.g. UR-1, LL-5). Primary teeth use letters A-E per quadrant.
+
+### 🚀 Usage
+Development:
+```bash
+npm install
+npm run dev
+```
+Build:
+```bash
+npm run build
+```
+Preview:
+```bash
+npm run preview
+```
+
+### 🔗 Integration
+The component can be embedded in any React app.
+Example:
+```tsx
+import App from "./App";
+
+export default function Host(){
+  return (
+    <App
+      language="en"
+      onLanguageChange={(lang) => console.log(lang)}
+      numberingSystem="FDI"
+      onNumberingChange={(system) => console.log(system)}
+      darkMode={false}
+      onDarkModeChange={(dark) => console.log(dark)}
+    />
+  );
+}
+```
+
+**Dark mode integration:**
+- **Standalone mode:** Omit `darkMode` prop — the component manages its own theme state via the topbar toggle button and adds/removes the `.dark` class on `<html>`.
+- **Controlled mode:** Pass `darkMode` and `onDarkModeChange` — the parent app controls the theme. The toggle button still appears but calls `onDarkModeChange` instead of managing internal state. The parent is responsible for adding/removing the `.dark` class on `<html>`.
+
+**Custom theme:**
+```tsx
+<App
+  themeConfig={{
+    colors: {
+      accent: '#e74c3c',
+      background: '#fafafa',
+      text: '#222222',
+    },
+  }}
+/>
+```
+
+**Plugin integration:**
+```tsx
+import App, { type OdontogramPlugin, setPluginState } from "./App";
+
+const myPlugin: OdontogramPlugin = {
+  id: "implant-brand",
+  label: { en: "Implant Brand", hu: "Implantátum márka" },
+  layer: "overlay",
+  renderSvg: (toothNo, _quadrant, state) => {
+    if (!state) return null;
+    return `<text x="16" y="60" font-size="6" fill="#3b7bff">${state}</text>`;
+  },
+};
+
+<App plugins={[myPlugin]} />
+
+// Set plugin state for a tooth:
+setPluginState(11, "implant-brand", "Straumann");
+```
+
+### 🧪 Testing
+```bash
+npm run test           # Run all 163 tests
+npm run test:watch     # Watch mode
+npm run test:coverage  # Coverage report
+```
+
+### 📖 API Documentation
+```bash
+npm run docs           # Generate TypeDoc docs in docs/
+```
+
+### 📡 Public API
+
+**Component props:**
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `language` | `string` | `'hu'` | UI language (hu/en/de/es/it/sk/pl/ru) |
+| `onLanguageChange` | `(lang) => void` | — | Callback when language changes |
+| `numberingSystem` | `string` | `'FDI'` | Numbering system (FDI/Universal/Palmer) |
+| `onNumberingChange` | `(system) => void` | — | Callback when numbering changes |
+| `darkMode` | `boolean` | `undefined` | Dark mode state. Omit for standalone mode. |
+| `onDarkModeChange` | `(dark) => void` | — | Callback when dark mode toggles. Required for controlled mode. |
+| `themeConfig` | `OdontogramThemeConfig` | `undefined` | Custom color overrides via CSS custom properties (`--odon-*`). |
+| `plugins` | `OdontogramPlugin[]` | `undefined` | Custom SVG plugins for visual overlays and per-tooth custom state. |
+| `readOnly` | `boolean` | `undefined` | Disable all interactions (click, touch, keyboard). Useful for print/report views. |
+| `enableNotes` | `boolean` | `undefined` | Enable per-tooth notes. Double-click a tooth to add/edit notes. |
+
+**Exported functions for external control:**
+
+| Function | Description |
+|---|---|
+| `initOdontogram()` | Initialize the engine and render all teeth |
+| `destroyOdontogram()` | Clean up the engine and remove event listeners |
+| `setNumberingSystem(system)` | Switch between FDI, Universal, Palmer |
+| `clearSelection()` | Deselect all teeth |
+| `setOcclusalVisible(on)` | Toggle occlusal view on/off |
+| `setWisdomVisible(on)` | Show/hide wisdom teeth |
+| `setShowBase(on)` | Show/hide bone layer |
+| `setHealthyPulpVisible(on)` | Show/hide healthy pulp |
+| `registerPlugins(plugins)` | Register custom SVG plugins |
+| `setPluginState(toothNo, pluginId, value)` | Set a plugin's custom state for a tooth |
+| `getPluginState(toothNo, pluginId)` | Get a plugin's custom state for a tooth |
+| `getToothStateSummary(toothNo)` | Get localized summary of all active states |
+| `setReadOnly(value)` | Enable/disable read-only mode |
+| `getReadOnly()` | Get current read-only state |
+| `setNotesEnabled(value)` | Enable/disable per-tooth notes |
+| `getNotesEnabled()` | Get current notes-enabled state |
+| `exportFhir(options?)` | Export the chart as an HL7 FHIR R4 collection Bundle (JSON download). Optional `{ subject }` reference; otherwise a placeholder Patient is embedded |
+| `exportImage(format)` | Download the chart as an image — `"png"` or `"jpg"` |
+| `importFhirBundle(input)` | Import a FHIR R4 Bundle (object or JSON string) produced by this module |
+| `setImportFormat(format)` | Set the next file import's parser — `"status"` or `"fhir"` |
+| `startIntroTour()` | Launch the 12-step interactive intro tour |
+
+### 💾 Status Export/Import Format
+The export creates a JSON file (version `1.3`) containing:
+
+**Global fields:**
+- `wisdomVisible` - wisdom teeth visible
+- `showBase` - bone layer visible
+- `occlusalVisible` - occlusal view active
+- `showHealthyPulp` - healthy pulp visible
+- `edentulous` - edentulous mode active
+
+**Per-tooth fields (32 teeth):**
+- `toothSelection` - base tooth type
+- `crownMaterial` - crown/abutment material
+- `bridgeUnit` - bridge connector type
+- `endo` - endodontic state
+- `mods` - modifications array (inflammation, parodontal)
+- `caries` - active caries surfaces
+- `fillingMaterial` - filling material
+- `fillingSurfaces` - filled surfaces
+- `pulpInflam` - pulp inflammation flag
+- `endoResection` - apicoectomy flag
+- `fissureSealing` - fissure sealant flag
+- `contactMesial` - mesial contact point loss
+- `contactDistal` - distal contact point loss
+- `bruxismWear` - occlusal bruxism wear
+- `bruxismNeckWear` - cervical bruxism wear
+- `brokenMesial`, `brokenIncisal`, `brokenDistal` - fracture locations
+- `extractionWound` - post-extraction wound
+- `extractionPlan` - planned extraction
+- `parapulpalPin` - parapulpal pin flag
+- `bridgePillar` - bridge abutment tooth
+- `mobility` - mobility grade (none/m1/m2/m3)
+- `crownNeeded` - crown needed indicator
+- `crownReplace` - crown replacement needed indicator
+- `missingClosed` - gap closed after extraction
+- `customStates` - plugin custom states (object, keyed by plugin ID)
+- `note` - per-tooth text note (string, optional — only present when non-empty)
+
+### 📁 Folder Structure
+- `src/App.tsx` - shell UI, topbar controls, language/numbering/dark mode/theme/plugin switcher
+- `src/odontogram.ts` - SVG layering engine, tooth state management, touch interactions, plugin overlays, UI wiring
+- `src/plugin.ts` - `OdontogramPlugin` type, `PluginLayer`, `getQuadrant()`, `LAYER_Z` z-index priorities
+- `src/theme.ts` - `OdontogramThemeConfig` type and `applyThemeConfig()` utility
+- `src/status_extras.ts` - 34 predefined restoration templates (bridges, dentures, bar constructions)
+- `src/i18n/` - translations (HU/EN/DE/ES/IT/SK/PL/RU) and i18n hook
+- `src/utils/numbering.ts` - FDI, Universal, Palmer numbering conversion
+- `src/__tests__/` - Vitest test suite (163 tests across 9 files)
+- `src/assets/teeth-svgs/` - SVG tooth templates (6 files: incisors, canines, premolars, molars + occlusal views)
+- `src/assets/icon-svgs/` - toolbar icon SVGs (5 files)
+
+### ⚙️ Tech Stack
+- React 18 + Vite + TypeScript
+- Tailwind CSS for UI styling
+- SVG layering via DOM manipulation (non-React state for performance)
+- Lightweight custom i18n system
+- Vitest + Testing Library for automated tests
+- TypeDoc for API documentation
+- Vite path alias: `@` mapped to `./src`
+
+### 📝 Notes
+- SVG templates are loaded from `src/assets/teeth-svgs` and `src/assets/icon-svgs`, so static hosting must serve the public folder.
+- The odontogram engine uses its own internal state (not React state) for performance and simplicity.
+- Milk teeth have a reduced set of available materials (no amalgam fillings, no pin-based endo).
+- Implant teeth have a different set of crown/abutment options than natural teeth.
+
+## 🇩🇪 Deutsch
+
+### 📋 Übersicht
+Dieses Projekt ist ein interaktiver, browserbasierter Odontogramm-Editor, der eine schnelle Zahnstatuserfassung mit einer übersichtlichen Benutzeroberfläche unterstützt. Es rendert geschichtete SVG-Zahnvorlagen zur Darstellung von Restaurationen, Karies, endodontischem Status, Mobilität und anderen klinischen Details, und bietet Mehrfachauswahl, Auswahlfilter und vordefinierte Statusvorlagen.
+
+---
+<img width="1728" height="869" alt="react-odontogram-modul-german-preview" src="https://github.com/user-attachments/assets/ea3844c7-62a7-4dfc-bb71-755f9f3f7d07" />
+
+🔗 **Test URL:** https://react-odontogram-modul.vercel.app/
+
+---
+
+### ✨ Hauptmerkmale
+- 🖱️ Schnelle Auswahl und Mehrfachauswahl (CMD/CTRL + Klick)
+- 🦷 Zahntypen: bleibend, Milch, Implantat, gebrochene Varianten, Kronenpräparation, subgingival
+- 👑 Kronenmaterialien: natürlich, E.max, Zirkon, Metallkeramik, provisorisch, Teleskop, Radix
+- 🔩 Implantat-Abutments: Heilabutment, Locator, Locator mit Prothese, Steg, Steg mit Prothese
+- 🌉 Brückenglieder: Zirkon, Metall, provisorisch, herausnehmbar, Steg, Steg mit Prothese
+- 🔍 Karieskartierung auf 6 Flächen: mesial, distal, bukkal, lingual, okklusal, subkronal
+- 🪥 Füllungsmaterialien pro Fläche: Amalgam, Komposit, GIZ, provisorisch
+- 🏥 Endodontische Zustände: medikamentöse Füllung, Wurzelfüllung, inkomplette Wurzelfüllung, Glasfaserstift, Metallstift, Resektion, parapulpaler Stift
+- ⚕️ Modifikationen: periapikale Entzündung (innen/außen), Parodontalerkrankung, Mobilitätsgrade (M1/M2/M3)
+- 🏷️ Spezielle Indikatoren: Krone erforderlich, Kronenwechsel erforderlich, geschlossene Lücke, Extraktionsplan, Bruxismus-Abrieb/Zervikaler Abrieb, Fissurenversiegelung, Kontaktpunktverlust
+- 👁️ Okklusionsansicht, Weisheitszähne, Knochen- und Pulpa-Sichtbarkeit
+- 🔢 12 Auswahlfilter (alle, vorhandene, bleibende, Milch, Implantate, fehlende, Ober-/Unterkiefer, Front/Molaren)
+- 📊 Vordefinierte Statusvorlagen (Zurücksetzen, Milchgebiss, Wechselgebiss, zahnlos)
+- 📦 34 vordefinierte Restaurationsvorlagen (Brücken, herausnehmbare Prothesen, Stegprothesen mit Implantaten)
+- 💾 Status-Export/Import in JSON (Version 1.3, mit Plugin Custom States und per-Zahn Notizen)
+- 🔗 HL7 FHIR R4 Export (Collection-Bundle aus Observations pro Zahn, ISO 3950 Zahnkodierung, hybride lokale + SNOMED Kodierung)
+- ✚ Kreuz-/Plus-Oberflächenauswahl (B/M/O/D/L) für Karies und Füllungen
+- 🧱 Füllungsmaterialien pro Fläche (gemischte Füllungen, z. B. bukkal Amalgam + distal Komposit)
+- 🖼️ PNG/JPG-Bildexport des Befunds (herunterladbar)
+- 🗂️ Konsolidiertes Export-Dropdown (Status JSON / FHIR / PNG / JPG)
+- 📥 Import-Dropdown mit FHIR-Import (liest exportierte Bundles zurück)
+- ⏳ Fortschrittsanzeige beim Bildexport
+- 🎓 12-stufige interaktive Einführungstour
+- 🔢 Drei Nummerierungssysteme (FDI, Universal, Palmer)
+- 🌐 I18n (HU/EN/DE/ES/IT/SK/PL/RU) mit Sprachumschalter (190+ Übersetzungsschlüssel pro Sprache)
+- 🌗 Dunkler Modus mit Umschalt-Button (eigenständig oder von der übergeordneten App gesteuert)
+- 🎨 Benutzerdefinierte Theme-Konfiguration (`themeConfig`-Prop) mit CSS Custom Properties (`--odon-*`)
+- 📱 Mobile Touch-UX: Tap-to-Zoom-Popover, Langes Drücken Kontextmenü, Pinch-to-Zoom, WCAG 44px Berührungsziele, Kieferbogen-Umschalter
+- 🔌 Benutzerdefiniertes SVG-Plugin-System: visuelle Overlays, per-Zahn Custom State, JSON Export/Import-Unterstützung
+- ⚠️ Statusvalidierung mit Warnungen bei inkompatiblen Zahnzustandskombinationen
+- 🏷️ Automatische Status-Tooltips auf Zahnkacheln (zeigt alle aktiven Zustände)
+- ♿ Tastaturzugänglichkeit (WCAG): ARIA listbox/option Rollen, Enter/Leertaste Auswahl, Pfeiltasten-Navigation, focus-visible Umrisse
+- 🔒 Schreibgeschützter Modus: alle Interaktionen deaktivieren für Druck-/Berichtsansichten
+- ✨ Auswahl-Animationen: pulsierende gestrichelte Umrandung und leuchtender Schatten auf ausgewählten Zähnen
+- 📝 Per-Zahn Notizen: Doppelklick zum Hinzufügen/Bearbeiten, Notiz-Symbol neben der Zahnnummer, Hover-Tooltip mit Notiztext, JSON Export/Import
+- 🧪 163 automatisierte Tests (Vitest) für Nummerierung, Übersetzungen, Vorlagen, i18n, App-Komponente, Theme, Touch, Plugins und Barrierefreiheit
+- 📖 TypeDoc API-Dokumentation mit JSDoc-Kommentaren für alle öffentlichen Exporte (`npm run docs`)
+
+### 📦 Module
+- 🦷 Odontogramm-Raster und Zahngitter-UI
+- 🎛️ Steuerung und Statuspanel
+- 🎨 SVG-Schichtungsmotor und Vorlagen
+- 🔢 Zahnnummerierung und Beschriftung (FDI/Universal/Palmer)
+- 🌐 Lokalisierung (HU/EN/DE/ES/IT/SK/PL/RU)
+- 💾 Status-Export/Import
+- 📋 Status-Extras: vordefinierte Restaurationsvorlagen
+- 🎨 Theme-Konfiguration: anpassbare Farbpalette über `--odon-*` CSS-Eigenschaften
+- 📱 Mobile Touch-Interaktionen (Tap-to-Zoom, Langes Drücken, Pinch-to-Zoom, Kieferbogen-Umschalter)
+- 🔌 Benutzerdefiniertes SVG-Plugin-System
+- ⚠️ Statusvalidierung und Tooltip-System
+- ♿ Tastaturzugänglichkeit und ARIA-Unterstützung
+- 🔒 Schreibgeschützter Modus
+- ✨ Auswahl-Animationen
+- 📝 Per-Zahn Notizen
+- 🧪 Automatisierte Testsuite (Vitest + Testing Library)
+
+### 🛠️ UI-Steuerung
+
+**🔝 Kopfleiste:**
+- Sprachumschalter (HU/EN/DE/ES/IT/SK/PL/RU Dropdown)
+- Dunkelmodus-Umschalter (Sonnen-/Mond-Symbol, wechselt zwischen hellem und dunklem Thema)
+- Nummerierungssystem-Umschalter (FDI/Universal/Palmer Dropdown)
+- Status exportieren / Status importieren Buttons
+
+**📊 Diagramm-Kopfzeile:**
+- Okklusionsansicht-Umschalter
+- Weisheitszahn-Sichtbarkeit-Umschalter
+- Knochen-Sichtbarkeit-Umschalter
+- Pulpa-Sichtbarkeit-Umschalter
+- Auswahl löschen Button
+
+**🔍 Auswahlfilter:**
+- Alle auswählen / Alle vorhandenen / Bleibende / Milch / Implantate / Alle fehlenden
+- Oberkiefer / Oberkiefer Front 6 / Oberkiefer Molaren
+- Unterkiefer / Unterkiefer Front 6 / Unterkiefer Molaren
+
+**📋 Statusvorlagen:**
+- Alles zurücksetzen (Mund zurücksetzen)
+- Milchgebiss
+- Wechselgebiss
+- Zahnlos-Umschalter
+
+**📦 Status-Extras Dropdown:**
+- Oberer/Unterer Zirkon-Brücken (12-22, 13-23, 16-26, Vollbogen)
+- Oberer/Unterer Metall-Brücken (12-22, 13-23, 16-26, Vollbogen)
+- Obere/Untere Teilprothesen
+- Obere/Untere Totalprothesen
+- Obere/Untere Stegprothesen mit Implantaten
+
+### 🦷 Zahntypen und Zustände
+
+**Zahnauswahl (Basistyp):**
+| Wert | Beschreibung |
+|---|---|
+| `none` | Fehlender Zahn |
+| `tooth-base` | Bleibender Zahn |
+| `milktooth` | Milchzahn |
+| `implant` | Zahnimplantat |
+| `tooth-crownprep` | Für Krone präparierter Zahn |
+| `tooth-under-gum` | Subgingivaler (nicht durchgebrochener) Zahn |
+
+**Gebrochene Zahnvarianten:**
+`tooth-broken-inicisal`, `tooth-broken-distal-inicisal`, `tooth-broken-distal`, `tooth-broken-mesial-distal-inicisal`, `tooth-broken-mesial-distal`, `tooth-broken-mesial-inicisal`, `tooth-broken-mesial`, `no-tooth-after-extraction`
+
+**Kronenmaterialien (bleibende Zähne):**
+`natural`, `broken`, `radix`, `emax`, `zircon`, `metal`, `temporary`, `telescope`
+
+**Kronenmaterialien (Implantate):**
+`natural` (keine), `healing-abutment`, `zircon`, `metal`, `temporary`, `locator`, `locator-prosthesis`, `bar`, `bar-prosthesis`
+
+**Brückenglieder:**
+`none`, `removable`, `zircon`, `metal`, `temporary`, `bar`, `bar-prosthesis`
+
+**Endodontische Optionen (bleibende Zähne):**
+`none`, `endo-medical-filling`, `endo-filling`, `endo-filling-incomplete`, `endo-glass-pin`, `endo-metal-pin`
+
+**Endodontische Optionen (Milchzähne):**
+`none`, `endo-medical-filling`
+
+**Füllungsmaterialien (bleibende Zähne):**
+`amalgam`, `composite`, `gic`, `temporary`
+
+**Füllungsmaterialien (Milchzähne):**
+`composite`, `gic`, `temporary`
+
+**Füllungs-/Kariesflächen:**
+`mesial`, `distal`, `buccal`, `lingual`, `occlusal`, `subcrown` (nur Karies)
+
+**Modifikationen:**
+`inflammation` (periapikale), `parodontal` (parodontale), `mobility` (M1/M2/M3)
+
+**Spezielle Indikatoren:**
+`crownNeeded`, `crownReplace`, `missingClosed`, `extractionPlan`, `extractionWound`, `bridgePillar`, `fissureSealing`, `contactMesial`, `contactDistal`, `bruxismWear`, `bruxismNeckWear`, `pulpInflam`, `endoResection`, `parapulpalPin`
+
+### 🖼️ SVG-Vorlagensystem
+
+**Zahnvorlagen** (`src/assets/teeth-svgs/`):
+| Vorlage | Verwendende Zähne |
+|---|---|
+| `11.svg` | 11, 12, 21, 22, 31, 32, 41, 42 (Schneidezähne) |
+| `13.svg` | 13, 23, 33, 43 (Eckzähne) |
+| `14.svg` / `14_occl.svg` | 14, 15, 24, 25, 34, 35, 44, 45 (Prämolaren) |
+| `16.svg` / `16_occl.svg` | 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48 (Molaren) |
+
+Vorlagen werden für den Unterkiefer um 180 Grad gedreht und für die linke Seite horizontal gespiegelt.
+
+**Icon-SVGs** (`src/assets/icon-svgs/`):
+`icon_8.svg` (Weisheit), `icon_gum.svg` (Knochen), `icon_no_selection.svg` (Löschen), `icon_occl.svg` (Okklusionsansicht), `icon_pulp.svg` (Pulpa)
+
+### 🔢 Nummerierungssysteme
+
+**FDI (ISO 3950):** Erwachsene Zähne 11-18, 21-28, 31-38, 41-48. Milchzähne 51-55, 61-65, 71-75, 81-85.
+
+**Universal (USA):** Erwachsene Zähne nummeriert 1-32. Milchzähne mit Buchstaben A-T.
+
+**Palmer (Zsigmondy-Palmer):** Quadrant + Positionsformat (z.B. UR-1, LL-5). Milchzähne verwenden Buchstaben A-E pro Quadrant.
+
+### 🚀 Verwendung
+Entwicklung:
+```bash
+npm install
+npm run dev
+```
+Build:
+```bash
+npm run build
+```
+Vorschau:
+```bash
+npm run preview
+```
+
+### 🔗 Integration
+Die Komponente kann in jede React-App eingebettet werden.
+Beispiel:
+```tsx
+import App from "./App";
+
+export default function Host(){
+  return (
+    <App
+      language="de"
+      onLanguageChange={(lang) => console.log(lang)}
+      numberingSystem="FDI"
+      onNumberingChange={(system) => console.log(system)}
+      darkMode={false}
+      onDarkModeChange={(dark) => console.log(dark)}
+    />
+  );
+}
+```
+
+**Dunkelmodus-Integration:**
+- **Eigenständiger Modus:** `darkMode`-Prop weglassen — die Komponente verwaltet ihren eigenen Theme-Zustand über den Umschalter in der Kopfleiste und fügt die `.dark`-Klasse auf `<html>` hinzu/entfernt sie.
+- **Gesteuerter Modus:** `darkMode` und `onDarkModeChange` übergeben — die übergeordnete App steuert das Theme. Der Umschalter erscheint weiterhin, ruft aber `onDarkModeChange` auf, anstatt den internen Zustand zu verwalten. Die übergeordnete App ist für das Hinzufügen/Entfernen der `.dark`-Klasse auf `<html>` verantwortlich.
+
+### 📡 Öffentliche API
+
+**Komponenten-Props:**
+
+| Prop | Typ | Standard | Beschreibung |
+|---|---|---|---|
+| `language` | `string` | `'hu'` | UI-Sprache (hu/en/de/es/it/sk/pl/ru) |
+| `onLanguageChange` | `(lang) => void` | — | Callback bei Sprachänderung |
+| `numberingSystem` | `string` | `'FDI'` | Nummerierungssystem (FDI/Universal/Palmer) |
+| `onNumberingChange` | `(system) => void` | — | Callback bei Nummerierungsänderung |
+| `darkMode` | `boolean` | `undefined` | Dunkelmodus-Zustand. Weglassen für eigenständigen Modus. |
+| `onDarkModeChange` | `(dark) => void` | — | Callback beim Umschalten des Dunkelmodus. Erforderlich für gesteuerten Modus. |
+| `themeConfig` | `OdontogramThemeConfig` | `undefined` | Benutzerdefinierte Farbüberschreibungen über CSS Custom Properties (`--odon-*`). |
+| `plugins` | `OdontogramPlugin[]` | `undefined` | Benutzerdefinierte SVG-Plugins für visuelle Overlays und per-Zahn Custom State. |
+| `readOnly` | `boolean` | `undefined` | Alle Interaktionen deaktivieren (Klick, Touch, Tastatur). Nützlich für Druck-/Berichtsansichten. |
+| `enableNotes` | `boolean` | `undefined` | Per-Zahn Notizen aktivieren. Doppelklick auf einen Zahn zum Hinzufügen/Bearbeiten. |
+
+**Exportierte Funktionen zur externen Steuerung:**
+
+| Funktion | Beschreibung |
+|---|---|
+| `initOdontogram()` | Motor initialisieren und alle Zähne rendern |
+| `destroyOdontogram()` | Motor aufräumen und Ereignisbehandler entfernen |
+| `setNumberingSystem(system)` | Zwischen FDI, Universal, Palmer wechseln |
+| `clearSelection()` | Alle Zähne abwählen |
+| `setOcclusalVisible(on)` | Okklusionsansicht ein-/ausschalten |
+| `setWisdomVisible(on)` | Weisheitszähne anzeigen/verbergen |
+| `setShowBase(on)` | Knochenschicht anzeigen/verbergen |
+| `setHealthyPulpVisible(on)` | Gesunde Pulpa anzeigen/verbergen |
+| `registerPlugins(plugins)` | Benutzerdefinierte SVG-Plugins registrieren |
+| `setPluginState(toothNo, pluginId, value)` | Plugin Custom State für einen Zahn setzen |
+| `getPluginState(toothNo, pluginId)` | Plugin Custom State eines Zahns abrufen |
+| `getToothStateSummary(toothNo)` | Lokalisierte Zusammenfassung aller aktiven Zustände |
+| `setReadOnly(value)` | Schreibgeschützten Modus aktivieren/deaktivieren |
+| `getReadOnly()` | Aktuellen Schreibgeschützt-Zustand abrufen |
+| `setNotesEnabled(value)` | Per-Zahn Notizen aktivieren/deaktivieren |
+| `getNotesEnabled()` | Aktuellen Notizen-Status abrufen |
+| `exportFhir(options?)` | Befund als HL7 FHIR R4 Collection-Bundle exportieren (JSON-Download). Optionale `{ subject }`-Referenz; sonst wird ein Platzhalter-Patient eingebettet |
+| `exportImage(format)` | Befund als Bild herunterladen — `"png"` oder `"jpg"` |
+| `importFhirBundle(input)` | Ein von diesem Modul erzeugtes FHIR-R4-Bundle importieren (Objekt oder JSON-String) |
+| `setImportFormat(format)` | Parser für den nächsten Datei-Import festlegen — `"status"` oder `"fhir"` |
+| `startIntroTour()` | Die 12-stufige interaktive Einführungstour starten |
+
+### 📁 Ordnerstruktur
+- `src/App.tsx` - UI-Hülle, Kopfleisten-Steuerung, Sprach-/Nummerierungs-/Dunkelmodus-/Theme-Umschalter
+- `src/odontogram.ts` - SVG-Schichtungsmotor, Zahnstatusmanagement, UI-Verdrahtung
+- `src/plugin.ts` - `OdontogramPlugin`-Typ, `PluginLayer`, `getQuadrant()`, `LAYER_Z` Z-Index-Prioritäten
+- `src/theme.ts` - `OdontogramThemeConfig`-Typ und `applyThemeConfig()`-Hilfsfunktion
+- `src/status_extras.ts` - 34 vordefinierte Restaurationsvorlagen (Brücken, Prothesen, Stegkonstruktionen)
+- `src/i18n/` - Übersetzungen (HU/EN/DE/ES/IT/SK/PL/RU) und i18n-Hook
+- `src/utils/numbering.ts` - FDI, Universal, Palmer Nummerierungskonvertierung
+- `src/__tests__/` - Vitest-Testsuite (163 Tests)
+- `src/assets/teeth-svgs/` - SVG-Zahnvorlagen (6 Dateien: Schneide-, Eck-, Prämolaren, Molaren + Okklusionsansichten)
+- `src/assets/icon-svgs/` - Toolbar-Icon-SVGs (5 Dateien)
+
+### ⚙️ Technologie-Stack
+- React 18 + Vite + TypeScript
+- Tailwind CSS für UI-Styling
+- SVG-Schichtung über DOM-Manipulation (nicht React-State für Performance)
+- Leichtgewichtiges eigenes i18n-System
+- Vitest + Testing Library für automatisierte Tests
+- TypeDoc für API-Dokumentation
+- Vite-Pfadalias: `@` auf `./src` abgebildet
+- 
+
+## 🇪🇸 Español
+
+### 📋 Descripción general
+Este proyecto es un editor de odontograma interactivo basado en navegador que permite un registro rápido del estado dental con una interfaz limpia. Renderiza plantillas SVG de dientes en capas para representar restauraciones, caries, estado endodóntico, movilidad y otros detalles clínicos, proporcionando selección múltiple, filtros de selección y estados predefinidos.
+
+---
+<img width="1727" height="870" alt="react-odontogram-modul-spanish-preview" src="https://github.com/user-attachments/assets/ef914e4f-0c7e-4c8b-a95b-76d94080a1a6" />
+
+🔗 **Test URL:** https://react-odontogram-modul.vercel.app/
+
+---
+
+### ✨ Características principales
+- 🖱️ Selección rápida y selección múltiple (CMD/CTRL + clic)
+- 🦷 Tipos de diente: permanente, primario (de leche), implante, variantes fracturadas, preparación para corona, subgingival
+- 👑 Materiales de corona: natural, e.max, circonio, metalcerámica, provisional, telescópica, radix
+- 🔩 Pilares de implante: pilar de cicatrización, localizador, localizador con prótesis, barra, barra con prótesis
+- 🌉 Pónticos: circonio, metal, provisional, removible, barra, barra con prótesis
+- 🔍 Registro de caries en 6 superficies: mesial, distal, bucal, lingual, oclusal, subcoronal
+- 🪥 Materiales de obturación por superficie: amalgama, composite, ionómero de vidrio, temporal
+- 🏥 Estados endodónticos: obturación medicinal, tratamiento de conductos, obturación incompleta, poste de fibra de vidrio, poste metálico, resección, pin parapulpar
+- ⚕️ Modificaciones: inflamación periapical (interna/externa), enfermedad periodontal, grados de movilidad (M1/M2/M3)
+- 🏷️ Indicadores especiales: corona necesaria, reemplazo de corona necesario, espacio cerrado, plan de extracción, desgaste por bruxismo/desgaste cervical, sellado de fisuras, pérdida de punto de contacto
+- 👁️ Vista oclusal, muelas del juicio, visibilidad de hueso y pulpa
+- 🔢 12 filtros de selección (todos, presentes, permanentes, de leche, implantes, ausentes, superior/inferior, frontales/molares)
+- 📊 Estados predefinidos (restablecer, dentición primaria, dentición mixta, edéntulo)
+- 📦 34 plantillas de restauración predefinidas (puentes, prótesis removibles, prótesis con barra e implantes)
+- 💾 Exportación/importación de estado en JSON (versión 1.3, con estados personalizados de plugins y notas por diente)
+- 🔗 Exportación HL7 FHIR R4 (Bundle de colección con Observations por diente, codificación dental ISO 3950, codificación híbrida local + SNOMED)
+- ✚ Selección de superficies en cruz (B/M/O/D/L) para caries y obturaciones
+- 🧱 Materiales de obturación por superficie (obturaciones mixtas, p. ej. bucal amalgama + distal composite)
+- 🖼️ Exportación de imagen PNG/JPG del odontograma (descargable)
+- 🗂️ Menú de exportación unificado (Estado JSON / FHIR / PNG / JPG)
+- 📥 Menú de importación con importación FHIR (recupera Bundles exportados)
+- ⏳ Superposición de progreso durante la exportación de imagen
+- 🎓 Tour interactivo de introducción de 12 pasos
+- 🔢 Tres sistemas de numeración (FDI, Universal, Palmer)
+- 🌐 I18n (HU/EN/DE/ES/IT/SK/PL/RU) con selector de idioma (190+ claves de traducción por idioma)
+- 🌗 Modo oscuro con botón de alternancia (independiente o controlado por la aplicación principal)
+- 🎨 Configuración de tema personalizado (prop `themeConfig`) con CSS custom properties (`--odon-*`)
+- 📱 UX táctil móvil: popover de zoom al tocar, menú contextual con pulsación larga, zoom con pellizco, áreas táctiles WCAG 44px, navegación por arcada
+- 🔌 Sistema de plugins SVG personalizados: superposiciones visuales, estado personalizado por diente, soporte de exportación/importación JSON
+- ⚠️ Validación de estado con advertencias para combinaciones incompatibles
+- 🏷️ Tooltip automático de estado en las losetas dentales (muestra todos los estados activos)
+- ♿ Accesibilidad por teclado (WCAG): roles ARIA listbox/option, selección con Enter/Espacio, navegación con flechas, contornos focus-visible
+- 🔒 Modo solo lectura: desactivar todas las interacciones para vistas de impresión/informes
+- ✨ Animaciones de selección: borde punteado pulsante y sombra brillante en los dientes seleccionados
+- 📝 Notas por diente: doble clic para añadir/editar notas, icono de nota junto al número de diente, tooltip con texto de nota, exportación/importación JSON
+- 🧪 163 pruebas automatizadas (Vitest) para numeración, traducciones, plantillas, i18n, componente App, tema, táctil, plugins y accesibilidad
+- 📖 Documentación API TypeDoc con comentarios JSDoc en todas las exportaciones públicas (`npm run docs`)
+
+### 📦 Módulos
+- 🦷 Cuadrícula del odontograma e interfaz de mosaicos dentales
+- 🎛️ Panel de controles y estado
+- 🎨 Motor de capas SVG y plantillas
+- 🔢 Numeración dental y mapeo de etiquetas (FDI/Universal/Palmer)
+- 🌐 Localización (HU/EN/DE/ES/IT/SK/PL/RU)
+- 💾 Exportación/importación de estado
+- 📋 Extras de estado: plantillas de restauración predefinidas
+- 🎨 Configuración de tema: paleta de colores personalizable mediante propiedades CSS `--odon-*`
+- 📱 Interacciones táctiles móviles (zoom al tocar, pulsación larga, zoom con pellizco, alternador de arcada)
+- 🔌 Sistema de plugins SVG personalizados
+- ⚠️ Sistema de validación de estado y tooltips
+- ♿ Accesibilidad por teclado y soporte ARIA
+- 🔒 Modo solo lectura
+- ✨ Animaciones de selección
+- 📝 Notas por diente
+- 🧪 Suite de pruebas automatizadas (Vitest + Testing Library)
+
+### 🛠️ Controles de interfaz
+
+**🔝 Barra superior:**
+- Selector de idioma (HU/EN/DE/ES/IT/SK/PL/RU desplegable)
+- Botón de modo oscuro (icono sol/luna, alterna entre tema claro y oscuro)
+- Selector de sistema de numeración (FDI/Universal/Palmer desplegable)
+- Botones Exportar estado / Importar estado
+
+**📊 Encabezado del gráfico:**
+- Alternador de vista oclusal
+- Alternador de visibilidad de muelas del juicio
+- Alternador de visibilidad de hueso
+- Alternador de visibilidad de pulpa
+- Botón borrar selección
+
+**🔍 Filtros de selección:**
+- Seleccionar todos / Todos presentes / Permanentes / De leche / Implantes / Todos ausentes
+- Superior / Superior 6 frontales / Molares superiores
+- Inferior / Inferior 6 frontales / Molares inferiores
+
+**📋 Estados predefinidos:**
+- Restablecer todo (restablecer boca)
+- Dentición primaria
+- Dentición mixta
+- Edéntulo alternador
+
+**📦 Desplegable de extras de estado:**
+- Puentes de circonio superiores/inferiores (12-22, 13-23, 16-26, arco completo)
+- Puentes metálicos superiores/inferiores (12-22, 13-23, 16-26, arco completo)
+- Prótesis parciales removibles superiores/inferiores
+- Prótesis completas removibles superiores/inferiores
+- Prótesis con barra superiores/inferiores con implantes
+
+### 🦷 Tipos de dientes y estados
+
+**Selección de diente (tipo base):**
+| Valor | Descripción |
+|---|---|
+| `none` | Diente ausente |
+| `tooth-base` | Diente permanente |
+| `milktooth` | Diente primario (deciduo) |
+| `implant` | Implante dental |
+| `tooth-crownprep` | Diente preparado para corona |
+| `tooth-under-gum` | Diente subgingival (no erupcionado) |
+
+**Variantes de diente fracturado:**
+`tooth-broken-inicisal`, `tooth-broken-distal-inicisal`, `tooth-broken-distal`, `tooth-broken-mesial-distal-inicisal`, `tooth-broken-mesial-distal`, `tooth-broken-mesial-inicisal`, `tooth-broken-mesial`, `no-tooth-after-extraction`
+
+**Materiales de corona (dientes permanentes):**
+`natural`, `broken`, `radix`, `emax`, `zircon`, `metal`, `temporary`, `telescope`
+
+**Materiales de corona (implantes):**
+`natural` (ninguno), `healing-abutment`, `zircon`, `metal`, `temporary`, `locator`, `locator-prosthesis`, `bar`, `bar-prosthesis`
+
+**Pónticos:**
+`none`, `removable`, `zircon`, `metal`, `temporary`, `bar`, `bar-prosthesis`
+
+**Opciones endodónticas (dientes permanentes):**
+`none`, `endo-medical-filling`, `endo-filling`, `endo-filling-incomplete`, `endo-glass-pin`, `endo-metal-pin`
+
+**Opciones endodónticas (dientes de leche):**
+`none`, `endo-medical-filling`
+
+**Materiales de obturación (dientes permanentes):**
+`amalgam`, `composite`, `gic`, `temporary`
+
+**Materiales de obturación (dientes de leche):**
+`composite`, `gic`, `temporary`
+
+**Superficies de obturación/caries:**
+`mesial`, `distal`, `buccal`, `lingual`, `occlusal`, `subcrown` (solo caries)
+
+**Modificaciones:**
+`inflammation` (periapical), `parodontal` (periodontal), `mobility` (M1/M2/M3)
+
+**Indicadores especiales:**
+`crownNeeded`, `crownReplace`, `missingClosed`, `extractionPlan`, `extractionWound`, `bridgePillar`, `fissureSealing`, `contactMesial`, `contactDistal`, `bruxismWear`, `bruxismNeckWear`, `pulpInflam`, `endoResection`, `parapulpalPin`
+
+### 🖼️ Sistema de plantillas SVG
+
+**Plantillas dentales** (`src/assets/teeth-svgs/`):
+| Plantilla | Dientes que la usan |
+|---|---|
+| `11.svg` | 11, 12, 21, 22, 31, 32, 41, 42 (incisivos) |
+| `13.svg` | 13, 23, 33, 43 (caninos) |
+| `14.svg` / `14_occl.svg` | 14, 15, 24, 25, 34, 35, 44, 45 (premolares) |
+| `16.svg` / `16_occl.svg` | 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48 (molares) |
+
+Las plantillas se rotan 180 grados para la mandíbula inferior y se reflejan horizontalmente para el lado izquierdo.
+
+**SVGs de iconos** (`src/assets/icon-svgs/`):
+`icon_8.svg` (muela del juicio), `icon_gum.svg` (hueso), `icon_no_selection.svg` (borrar), `icon_occl.svg` (vista oclusal), `icon_pulp.svg` (pulpa)
+
+### 🔢 Sistemas de numeración
+
+**FDI (ISO 3950):** Dientes adultos 11-18, 21-28, 31-38, 41-48. Dientes primarios 51-55, 61-65, 71-75, 81-85.
+
+**Universal (EE.UU.):** Dientes adultos numerados 1-32. Dientes primarios con letras A-T.
+
+**Palmer (Zsigmondy-Palmer):** Formato cuadrante + posición (ej. UR-1, LL-5). Dientes primarios usan letras A-E por cuadrante.
+
+### 🚀 Uso
+Desarrollo:
+```bash
+npm install
+npm run dev
+```
+Build:
+```bash
+npm run build
+```
+Vista previa:
+```bash
+npm run preview
+```
+
+### 🔗 Integración
+El componente se puede integrar en cualquier aplicación React.
+Ejemplo:
+```tsx
+import App from "./App";
+
+export default function Host(){
+  return (
+    <App
+      language="es"
+      onLanguageChange={(lang) => console.log(lang)}
+      numberingSystem="FDI"
+      onNumberingChange={(system) => console.log(system)}
+      darkMode={false}
+      onDarkModeChange={(dark) => console.log(dark)}
+    />
+  );
+}
+```
+
+**Integración del modo oscuro:**
+- **Modo independiente:** Omitir la prop `darkMode` — el componente gestiona su propio estado de tema a través del botón en la barra superior y añade/elimina la clase `.dark` en `<html>`.
+- **Modo controlado:** Pasar `darkMode` y `onDarkModeChange` — la aplicación principal controla el tema. El botón de alternancia sigue apareciendo pero llama a `onDarkModeChange` en lugar de gestionar el estado interno. La aplicación principal es responsable de añadir/eliminar la clase `.dark` en `<html>`.
+
+### 📡 API pública
+
+**Props del componente:**
+
+| Prop | Tipo | Predeterminado | Descripción |
+|---|---|---|---|
+| `language` | `string` | `'hu'` | Idioma de la UI (hu/en/de/es/it/sk/pl/ru) |
+| `onLanguageChange` | `(lang) => void` | — | Callback cuando cambia el idioma |
+| `numberingSystem` | `string` | `'FDI'` | Sistema de numeración (FDI/Universal/Palmer) |
+| `onNumberingChange` | `(system) => void` | — | Callback cuando cambia la numeración |
+| `darkMode` | `boolean` | `undefined` | Estado del modo oscuro. Omitir para modo independiente. |
+| `onDarkModeChange` | `(dark) => void` | — | Callback al alternar modo oscuro. Requerido para modo controlado. |
+| `themeConfig` | `OdontogramThemeConfig` | `undefined` | Personalización de colores mediante CSS custom properties (`--odon-*`). |
+| `plugins` | `OdontogramPlugin[]` | `undefined` | Plugins SVG personalizados para superposiciones visuales y estado personalizado por diente. |
+| `readOnly` | `boolean` | `undefined` | Desactivar todas las interacciones (clic, táctil, teclado). Útil para vistas de impresión/informes. |
+| `enableNotes` | `boolean` | `undefined` | Activar notas por diente. Doble clic en un diente para añadir/editar notas. |
+
+**Funciones exportadas para control externo:**
+
+| Función | Descripción |
+|---|---|
+| `initOdontogram()` | Inicializar el motor y renderizar todos los dientes |
+| `destroyOdontogram()` | Limpiar el motor y eliminar los event listeners |
+| `setNumberingSystem(system)` | Cambiar entre FDI, Universal, Palmer |
+| `clearSelection()` | Deseleccionar todos los dientes |
+| `setOcclusalVisible(on)` | Alternar vista oclusal on/off |
+| `setWisdomVisible(on)` | Mostrar/ocultar muelas del juicio |
+| `setShowBase(on)` | Mostrar/ocultar capa de hueso |
+| `setHealthyPulpVisible(on)` | Mostrar/ocultar pulpa sana |
+| `registerPlugins(plugins)` | Registrar plugins SVG personalizados |
+| `setPluginState(toothNo, pluginId, value)` | Establecer estado personalizado del plugin para un diente |
+| `getPluginState(toothNo, pluginId)` | Obtener estado personalizado del plugin de un diente |
+| `getToothStateSummary(toothNo)` | Obtener resumen localizado de todos los estados activos |
+| `setReadOnly(value)` | Activar/desactivar modo solo lectura |
+| `getReadOnly()` | Obtener estado actual de solo lectura |
+| `setNotesEnabled(value)` | Activar/desactivar notas por diente |
+| `getNotesEnabled()` | Obtener estado actual de notas |
+| `exportFhir(options?)` | Exportar el odontograma como Bundle de colección HL7 FHIR R4 (descarga JSON). Referencia `{ subject }` opcional; si no, se incluye un Patient de marcador |
+| `exportImage(format)` | Descargar el odontograma como imagen — `"png"` o `"jpg"` |
+| `importFhirBundle(input)` | Importar un Bundle FHIR R4 (objeto o cadena JSON) producido por este módulo |
+| `setImportFormat(format)` | Definir el parser de la próxima importación — `"status"` o `"fhir"` |
+| `startIntroTour()` | Iniciar el tour interactivo de introducción de 12 pasos |
+
+### 📁 Estructura de carpetas
+- `src/App.tsx` - UI principal, controles de barra superior, selector de idioma/numeración/modo oscuro/tema
+- `src/odontogram.ts` - Motor de capas SVG, gestión de estado dental, cableado UI
+- `src/plugin.ts` - tipo `OdontogramPlugin`, `PluginLayer`, `getQuadrant()`, prioridades Z `LAYER_Z`
+- `src/theme.ts` - tipo `OdontogramThemeConfig` y función `applyThemeConfig()`
+- `src/status_extras.ts` - 34 plantillas de restauración predefinidas (puentes, prótesis, construcciones con barra)
+- `src/i18n/` - traducciones (HU/EN/DE/ES/IT/SK/PL/RU) y hook i18n
+- `src/utils/numbering.ts` - conversión de numeración FDI, Universal, Palmer
+- `src/__tests__/` - suite de pruebas Vitest (163 pruebas)
+- `src/assets/teeth-svgs/` - plantillas SVG dentales (6 archivos: incisivos, caninos, premolares, molares + vistas oclusales)
+- `src/assets/icon-svgs/` - SVGs de iconos de barra de herramientas (5 archivos)
+
+### ⚙️ Stack tecnológico
+- React 18 + Vite + TypeScript
+- Tailwind CSS para estilos de UI
+- Capas SVG mediante manipulación del DOM (no React state por rendimiento)
+- Sistema i18n propio ligero
+- Vitest + Testing Library para pruebas automatizadas
+- TypeDoc para documentación de API
+- Alias de ruta Vite: `@` mapeado a `./src`
+
+## 🇭🇺 Magyar
+
+### 📋 Áttekintés
+A projekt egy interaktív, böngészőben futó odontogram szerkesztő, amely a fogazati státuszrögzítést modern, gyorsan kezelhető UI-val támogatja. A rendszer különböző fogtípusokat, restaurációkat, gyökérkezelési állapotokat, fogszuvasodás felületeket, mobilitást és egyéb fogászati jellemzőket képes rétegzett SVG ikonokkal megjeleníteni, miközben többfogos kiválasztást, szűrőket és előre definiált státusz mintákat is biztosít a felhasználó számára.
+
+---
+<img width="1725" height="913" alt="react-odontogram-modul-hungarian-preview" src="https://github.com/user-attachments/assets/ce7af57c-dc5a-4745-b861-4b85854dbd2e" />
+
+🔗 **Test URL:** https://react-odontogram-modul.vercel.app/
+
+---
+
+### ✨ Főbb funkciók
+- 🖱️ Gyors fogkijelölés és többfogos kiválasztás (CMD/CTRL + kattintás)
+- 🦷 Fogtípusok: maradó, tej, implantátum, tört változatok, koronaelőkészítés, íny alatti
+- 👑 Korona anyagok: természetes, e.max, cirkón, fém-kerámia, ideiglenes, teleszkóp, radix
+- 🔩 Implantátum felépítmények: gyógyuló csavar, lokátor, lokátor protézissel, bár, bár protézissel
+- 🌉 Hídtagok: cirkón, fém, ideiglenes, kivehető, bár, bár protézissel
+- 🔍 Kariesz kartografálás 6 felületen: meziális, disztális, bukkális, linguális, okkluzális, korona alatti
+- 🪥 Tömés anyagok felületenként: amalgám, kompozit, GIC, ideiglenes
+- 🏥 Endodonciai állapotok: gyógyszeres tömés, gyökértömés, incomplét gyökértömés, üvegszálas csap, fém csap, rezekció, parapulpális csap
+- ⚕️ Módosítók: periapikális gyulladás (belső/külső), parodontális betegség, mobilitás fokok (M1/M2/M3)
+- 🏷️ Speciális jelzők: korona szükséges, korona csere szükséges, zárt hézag, extrakciós terv, bruxizmus koptatás/nyaki koptatás, fisszúra zárás, kontaktpont vesztés
+- 👁️ Okkluzális nézet, bölcsességfog, csont és pulpa láthatóság kapcsolók
+- 🔢 12 kiválasztási szűrő (összes, jelenlévő, maradó, tej, implantátum, hiányzó, felső/alsó, front/molárisok)
+- 📊 Előre definiált státusz minták (alaphelyzet, tejfogazat, vegyes fogazat, fogatlan)
+- 📦 34 előre definiált restaurációs sablon (hidak, kivehető protézisek, bár protézisek implantokkal)
+- 💾 Állapot export/import JSON formátumban (1.3 verzió, plugin egyedi állapotokkal és fogankénti megjegyzésekkel)
+- 🔗 HL7 FHIR R4 export (collection Bundle fogankénti Observation-ökkel, ISO 3950 fogkódolás, hibrid lokális + SNOMED kódolás)
+- ✚ Kereszt felület-választó (B/M/O/D/L) a caries és a tömés panelen
+- 🧱 Felületenkénti tömőanyagok (vegyes tömések, pl. buccal amalgám + distal composite)
+- 🖼️ PNG/JPG képexport az odontogramról (letölthető)
+- 🗂️ Egységes Export menü (Státusz JSON / FHIR / PNG / JPG)
+- 📥 Import menü FHIR importtal (visszatölti az exportált Bundle-öket)
+- ⏳ Folyamatjelző overlay a képexport alatt
+- 🎓 12 lépéses interaktív bemutató túra
+- 🔢 Három számozási rendszer (FDI, Universal, Palmer)
+- 🌐 I18n (HU/EN/DE/ES/IT/SK/PL/RU) választható nyelvvel (190+ fordítási kulcs nyelvenként)
+- 🌗 Sötét mód támogatás váltógombbal (önálló vagy szülő alkalmazás által vezérelt)
+- 🎨 Egyedi téma konfiguráció (`themeConfig` prop) CSS custom property-kkel (`--odon-*`)
+- 📱 Mobil érintéses UX: koppintásos nagyító, hosszú nyomás helyi menü, csípéses zoom, WCAG 44px érintési célpontok, fogív navigáció
+- 🔌 Egyedi SVG plugin rendszer: vizuális fedvények, foganként egyedi állapot, JSON export/import támogatás
+- ⚠️ Állapot validáció figyelmeztetésekkel inkompatibilis fogállapot-kombinációkra
+- 🏷️ Automatikus állapot tooltip a fogcsempéken (összes aktív állapot megjelenítése)
+- ♿ Billentyűzet akadálymentesítés (WCAG): ARIA listbox/option szerepkörök, Enter/Space kijelölés, nyílbillentyűs navigáció, focus-visible körvonalak
+- 🔒 Csak olvasható mód: összes interakció letiltása nyomtatási/jelentés nézetekhez
+- ✨ Kijelölési animációk: pulzáló szaggatott keret és ragyogó árnyék a kijelölt fogakon
+- 📝 Fogankénti megjegyzések: dupla kattintás megjegyzés hozzáadásához/szerkesztéséhez, megjegyzés ikon a fogszám mellett, hover tooltip a megjegyzés szövegével, JSON export/import
+- 🧪 163 automatizált teszt (Vitest) a számozás, fordítások, presetek, i18n, App komponens, téma, érintés, pluginek és akadálymentesítés lefedésére
+- 📖 TypeDoc API dokumentáció JSDoc kommentekkel minden publikus exporton (`npm run docs`)
+
+### 📦 Modulok
+- 🦷 Odontogram rács és fogcsempe UI
+- 🎛️ Vezérlők és státusz panel
+- 🎨 SVG rétegelő motor és fogsablonok
+- 🔢 Fogszámozás és címke generálás (FDI/Universal/Palmer)
+- 🌐 Lokalizáció (HU/EN/DE/ES/IT/SK/PL/RU)
+- 💾 Státusz export/import
+- 📋 Státusz extrák: előre definiált restaurációs sablonok
+- 🎨 Téma konfiguráció: testreszabható színpaletta `--odon-*` CSS property-kkel
+- 📱 Mobil érintéses interakciók (koppintásos nagyító, hosszú nyomás, csípéses zoom, fogív váltó)
+- 🔌 Egyedi SVG plugin rendszer
+- ⚠️ Állapot validáció és tooltip rendszer
+- ♿ Billentyűzet akadálymentesítés és ARIA támogatás
+- 🔒 Csak olvasható mód
+- ✨ Kijelölési animációk
+- 📝 Fogankénti megjegyzés rendszer
+- 🧪 Automatizált tesztcsomag (Vitest + Testing Library)
+
+### 🛠️ UI vezérlők
+
+**🔝 Fejléc sáv:**
+- Nyelvválasztó (HU/EN/DE/ES/IT/SK/PL/RU legördülő)
+- Sötét mód váltógomb (nap/hold ikon, világos és sötét téma között vált)
+- Számozási rendszer választó (FDI/Universal/Palmer legördülő)
+- Státusz exportálás / Státusz importálás gombok
+
+**📊 Diagram fejléc:**
+- Okkluzális nézet kapcsoló
+- Bölcsességfog láthatóság kapcsoló
+- Csont láthatóság kapcsoló
+- Pulpa láthatóság kapcsoló
+- Kiválasztás törlése gomb
+
+**🔍 Kiválasztási szűrők:**
+- Összes kiválasztása / Összes jelenlévő / Maradó / Tej / Implantátumok / Összes hiányzó
+- Felső / Felső front 6 / Felső molárisok
+- Alsó / Alsó front 6 / Alsó molárisok
+
+**📋 Státusz minták:**
+- Összes visszaállítása (szájüreg reset)
+- Tejfogazat
+- Vegyes fogazat
+- Fogatlan kapcsoló
+
+**📦 Státusz extrák legördülő:**
+- Felső/Alsó cirkón hidak (12-22, 13-23, 16-26, teljes ív)
+- Felső/Alsó fém hidak (12-22, 13-23, 16-26, teljes ív)
+- Felső/Alsó részleges kivehető protézisek
+- Felső/Alsó teljes kivehető protézisek
+- Felső/Alsó bár protézisek implantátumokkal
+
+### 🦷 Fogtípusok és állapotok
+
+**Fog kiválasztás (alaptípus):**
+| Érték | Leírás |
+|---|---|
+| `none` | Hiányzó fog |
+| `tooth-base` | Maradó fog |
+| `milktooth` | Tejfog |
+| `implant` | Fogimplantátum |
+| `tooth-crownprep` | Koronaelőkészített fog |
+| `tooth-under-gum` | Íny alatti (előbújatlan) fog |
+
+**Tört fog változatok:**
+`tooth-broken-inicisal`, `tooth-broken-distal-inicisal`, `tooth-broken-distal`, `tooth-broken-mesial-distal-inicisal`, `tooth-broken-mesial-distal`, `tooth-broken-mesial-inicisal`, `tooth-broken-mesial`, `no-tooth-after-extraction`
+
+**Korona anyagok (maradó fogak):**
+`natural`, `broken`, `radix`, `emax`, `zircon`, `metal`, `temporary`, `telescope`
+
+**Korona anyagok (implantátumok):**
+`natural` (nincs), `healing-abutment`, `zircon`, `metal`, `temporary`, `locator`, `locator-prosthesis`, `bar`, `bar-prosthesis`
+
+**Hídtagok:**
+`none`, `removable`, `zircon`, `metal`, `temporary`, `bar`, `bar-prosthesis`
+
+**Endodonciai lehetőségek (maradó fogak):**
+`none`, `endo-medical-filling`, `endo-filling`, `endo-filling-incomplete`, `endo-glass-pin`, `endo-metal-pin`
+
+**Endodonciai lehetőségek (tejfogak):**
+`none`, `endo-medical-filling`
+
+**Tömés anyagok (maradó fogak):**
+`amalgam`, `composite`, `gic`, `temporary`
+
+**Tömés anyagok (tejfogak):**
+`composite`, `gic`, `temporary`
+
+**Tömés/kariesz felületek:**
+`mesial`, `distal`, `buccal`, `lingual`, `occlusal`, `subcrown` (csak kariesz)
+
+**Módosítók:**
+`inflammation` (periapikális), `parodontal` (parodontális), `mobility` (M1/M2/M3)
+
+**Speciális jelzők:**
+`crownNeeded`, `crownReplace`, `missingClosed`, `extractionPlan`, `extractionWound`, `bridgePillar`, `fissureSealing`, `contactMesial`, `contactDistal`, `bruxismWear`, `bruxismNeckWear`, `pulpInflam`, `endoResection`, `parapulpalPin`
+
+### 🖼️ SVG sablon rendszer
+
+**Fogsablonok** (`src/assets/teeth-svgs/`):
+| Sablon | Használó fogak |
+|---|---|
+| `11.svg` | 11, 12, 21, 22, 31, 32, 41, 42 (metszőfogak) |
+| `13.svg` | 13, 23, 33, 43 (szemfogak) |
+| `14.svg` / `14_occl.svg` | 14, 15, 24, 25, 34, 35, 44, 45 (kis őrlőfogak) |
+| `16.svg` / `16_occl.svg` | 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48 (nagy őrlőfogak) |
+
+A sablonok az alsó állcsontnál 180 fokkal elforgatva, a bal oldalnál vízszintesen tükrözve jelennek meg.
+
+**Ikon SVG-k** (`src/assets/icon-svgs/`):
+`icon_8.svg` (bölcsesség), `icon_gum.svg` (csont), `icon_no_selection.svg` (törlés), `icon_occl.svg` (okkluzális nézet), `icon_pulp.svg` (pulpa)
+
+### 🔢 Számozási rendszerek
+
+**FDI (ISO 3950):** Felnőtt fogak 11-18, 21-28, 31-38, 41-48. Tejfogak 51-55, 61-65, 71-75, 81-85.
+
+**Universal (USA):** Felnőtt fogak 1-32 számozással. Tejfogak A-T betűkkel.
+
+**Palmer (Zsigmondy-Palmer):** Kvadráns + pozíció formátum (pl. UR-1, LL-5). Tejfogak kvadránsonként A-E betűkkel.
+
+### 🚀 Használat
+Fejlesztés indítása:
+```bash
+npm install
+npm run dev
+```
+Build:
+```bash
+npm run build
+```
+Előzetes megtekintés:
+```bash
+npm run preview
+```
+
+### 🔗 Integráció
+A komponens külön is felhasználható React alkalmazásban.
+Példaként:
+```tsx
+import App from "./App";
+
+export default function Host(){
+  return (
+    <App
+      language="hu"
+      onLanguageChange={(lang) => console.log(lang)}
+      numberingSystem="FDI"
+      onNumberingChange={(system) => console.log(system)}
+      darkMode={false}
+      onDarkModeChange={(dark) => console.log(dark)}
+    />
+  );
+}
+```
+
+**Sötét mód integráció:**
+- **Önálló mód:** A `darkMode` prop elhagyása — a komponens saját maga kezeli a téma állapotát a fejléc váltógombján keresztül, és hozzáadja/eltávolítja a `.dark` osztályt a `<html>` elemen.
+- **Vezérelt mód:** A `darkMode` és `onDarkModeChange` átadása — a szülő alkalmazás vezérli a témát. A váltógomb továbbra is megjelenik, de a `onDarkModeChange` callbacket hívja a belső állapot kezelése helyett. A szülő alkalmazás felelős a `.dark` osztály hozzáadásáért/eltávolításáért a `<html>` elemen.
+
+### 📡 Nyilvános API
+
+**Komponens propok:**
+
+| Prop | Típus | Alapértelmezett | Leírás |
+|---|---|---|---|
+| `language` | `string` | `'hu'` | UI nyelv (hu/en/de/es/it/sk/pl/ru) |
+| `onLanguageChange` | `(lang) => void` | — | Callback nyelvváltáskor |
+| `numberingSystem` | `string` | `'FDI'` | Számozási rendszer (FDI/Universal/Palmer) |
+| `onNumberingChange` | `(system) => void` | — | Callback számozásváltáskor |
+| `darkMode` | `boolean` | `undefined` | Sötét mód állapot. Elhagyva: önálló mód. |
+| `onDarkModeChange` | `(dark) => void` | — | Callback sötét mód váltáskor. Szükséges vezérelt módhoz. |
+| `themeConfig` | `OdontogramThemeConfig` | `undefined` | Egyedi szín felülírások CSS custom property-kkel (`--odon-*`). |
+| `plugins` | `OdontogramPlugin[]` | `undefined` | Egyedi SVG pluginek vizuális fedvényekhez és foganként egyedi állapothoz. |
+| `readOnly` | `boolean` | `undefined` | Összes interakció letiltása (kattintás, érintés, billentyűzet). Nyomtatási/jelentés nézetekhez. |
+| `enableNotes` | `boolean` | `undefined` | Fogankénti megjegyzések engedélyezése. Dupla kattintás a fogra megjegyzés hozzáadásához. |
+
+**Exportált függvények külső vezérléshez:**
+
+| Függvény | Leírás |
+|---|---|
+| `initOdontogram()` | Motor inicializálása és összes fog renderelése |
+| `destroyOdontogram()` | Motor leállítása és eseménykezelők eltávolítása |
+| `setNumberingSystem(system)` | Váltás FDI, Universal, Palmer között |
+| `clearSelection()` | Összes fog kiválasztásának törlése |
+| `setOcclusalVisible(on)` | Okkluzális nézet be/ki |
+| `setWisdomVisible(on)` | Bölcsességfogak mutatása/elrejtése |
+| `setShowBase(on)` | Csont réteg mutatása/elrejtése |
+| `setHealthyPulpVisible(on)` | Egészséges pulpa mutatása/elrejtése |
+| `registerPlugins(plugins)` | Egyedi SVG pluginek regisztrálása |
+| `setPluginState(toothNo, pluginId, value)` | Plugin egyedi állapot beállítása egy foghoz |
+| `getPluginState(toothNo, pluginId)` | Plugin egyedi állapot lekérdezése egy foghoz |
+| `getToothStateSummary(toothNo)` | Lokalizált összesítés az összes aktív állapotról |
+| `setReadOnly(value)` | Csak olvasható mód be/kikapcsolása |
+| `getReadOnly()` | Aktuális csak olvasható állapot lekérdezése |
+| `setNotesEnabled(value)` | Fogankénti megjegyzések be/kikapcsolása |
+| `getNotesEnabled()` | Aktuális megjegyzés-engedélyezés állapot lekérdezése |
+| `exportFhir(options?)` | Az odontogram exportálása HL7 FHIR R4 collection Bundle-ként (JSON letöltés). Opcionális `{ subject }` referencia; egyébként placeholder Patient kerül be |
+| `exportImage(format)` | Az odontogram letöltése képként — `"png"` vagy `"jpg"` |
+| `importFhirBundle(input)` | A modul által készített FHIR R4 Bundle importálása (objektum vagy JSON szöveg) |
+| `setImportFormat(format)` | A következő fájlimport értelmezője — `"status"` vagy `"fhir"` |
+| `startIntroTour()` | A 12 lépéses interaktív bemutató túra indítása |
+
+### 📁 Mappastruktúra
+- `src/App.tsx` - UI váz, fejléc vezérlők, nyelv/számozás/sötét mód/téma választó
+- `src/odontogram.ts` - SVG rétegelő motor, fog állapotkezelés, UI összekötés
+- `src/plugin.ts` - `OdontogramPlugin` típus, `PluginLayer`, `getQuadrant()`, `LAYER_Z` z-index prioritások
+- `src/theme.ts` - `OdontogramThemeConfig` típus és `applyThemeConfig()` segédfüggvény
+- `src/status_extras.ts` - 34 előre definiált restaurációs sablon (hidak, protézisek, stég konstrukciók)
+- `src/i18n/` - fordítások (HU/EN/DE/ES/IT/SK/PL/RU) és i18n hook
+- `src/utils/numbering.ts` - FDI, Universal, Palmer számozási konverzió
+- `src/__tests__/` - Vitest tesztcsomag (163 teszt)
+- `src/assets/teeth-svgs/` - SVG fogsablonok (6 fájl: metszők, szemfogak, kis őrlők, nagy őrlők + okkluzális nézetek)
+- `src/assets/icon-svgs/` - eszköztár ikon SVG-k (5 fájl)
+
+### ⚙️ Technológia
+- React 18 + Vite + TypeScript
+- Tailwind CSS a UI stílusokhoz
+- SVG rétegelés DOM manipulációval (nem React state, a teljesítmény érdekében)
+- Egyszerű egyedi i18n rendszer
+- Vitest + Testing Library automatizált tesztekhez
+- TypeDoc API dokumentációhoz
+- Vite útvonal alias: `@` a `./src` mappára képezve
+
+### 📝 Megjegyzések
+- A SVG sablonok `src/assets/teeth-svgs` és `src/assets/icon-svgs` mappa alól kerülnek betöltésre, ezért statikus hostingnál a public mappa elérhetősége kötelező.
+- Az UI rétegelés és állapotkezelés jelenleg nem React state-ben, hanem saját belső állapotban működik.
+- A tejfogaknál szűkebb anyagválaszték áll rendelkezésre (nincs amalgám tömés, nincs csapos endo).
+- Az implantátum fogaknál a koronalehetőségek eltérnek a természetes fogakétól (lokátor, bár, gyógyuló csavar).
+
+---
+
+## 📄 License
+
+Created with ❤️ by Zoltan Dul (2026)
+Released under the MIT License.

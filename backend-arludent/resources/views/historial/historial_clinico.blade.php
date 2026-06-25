@@ -315,6 +315,18 @@
             </div>
         </div>
 
+        <!-- ODONTOGRAMA -->
+        @if($historial->odontograma_image)
+        <div class="section">
+            <div class="section-header" style="background: #3B82F6;">
+                <h2>ODONTOGRAMA</h2>
+            </div>
+            <div class="section-body text-center" style="padding: 15px; text-align: center;">
+                <img src="{{ $historial->odontograma_image }}" alt="Odontograma" style="max-width: 100%; height: auto; border: 1px solid #E5E7EB; border-radius: 8px;">
+            </div>
+        </div>
+        @endif
+
         <!-- TRATAMIENTOS -->
         @if($historial->tratamientos && $historial->tratamientos->count() > 0)
         <div class="section">

@@ -461,10 +461,16 @@ class InternalApiController extends Controller
                 $horario = sprintf("%02d:00", $hora);
                 $horarioCompleto = "{$fecha} {$horario}:00";
 
+                $slotInicio = $horarioCompleto;
+                $slotFin = date('Y-m-d H:i:s', strtotime("$horarioCompleto + 1 hour"));
+
                 // Verificar si está ocupado
-                $ocupado = $citasOcupadas->contains(function ($cita) use ($horarioCompleto) {
-                    return $horarioCompleto >= $cita->fecha_hora_inicio->format('Y-m-d H:i:s') &&
-                           $horarioCompleto < $cita->fecha_hora_fin->format('Y-m-d H:i:s');
+                $ocupado = $citasOcupadas->contains(function ($cita) use ($slotInicio, $slotFin) {
+                    $citaInicio = $cita->fecha_hora_inicio->format('Y-m-d H:i:s');
+                    $citaFin = $cita->fecha_hora_fin->format('Y-m-d H:i:s');
+                    
+                    // Slot overlaps with Cita if: SlotInicio < CitaFin AND SlotFin > CitaInicio
+                    return $slotInicio < $citaFin && $slotFin > $citaInicio;
                 });
 
                 if (!$ocupado) {

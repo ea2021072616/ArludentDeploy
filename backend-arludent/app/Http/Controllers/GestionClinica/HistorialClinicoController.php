@@ -190,7 +190,6 @@ class HistorialClinicoController extends Controller
             'detalles.realizadoPor',
             'tratamientos.tratamiento',
             'tratamientos.seguimientos.registradoPor',
-            'odontograma',
             'prescripciones'
         ])->find($id);
 

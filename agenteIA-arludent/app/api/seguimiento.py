@@ -62,7 +62,7 @@ async def enviar_webhook_laravel(payload: WebhookPayload):
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(
                 webhook_url,
-                json=payload.dict(),
+                content=payload.json(),
                 headers={
                     "Content-Type": "application/json",
                     "X-Internal-Key": settings.INTERNAL_API_KEY

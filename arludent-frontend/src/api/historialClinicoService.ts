@@ -69,7 +69,8 @@ export interface HistorialClinico {
   }
   detalles: DetalleHistorial[]
   tratamientos: TratamientoHistorial[]
-  odontograma: Odontograma[]
+  odontograma_state?: any
+  odontograma_image?: string
   prescripciones: Prescripcion[]
 }
 
@@ -126,16 +127,6 @@ export interface TratamientoHistorial {
     nombre: string
   }
   seguimientos?: SeguimientoTratamiento[]
-}
-
-export interface Odontograma {
-  id_odontograma: number
-  id_historial: number
-  pieza: string
-  estado_pieza: 'sano' | 'cariado' | 'restaurado' | 'ausente' | 'protesis' | 'otros'
-  tratamiento_asociado?: string
-  comentario?: string
-  fecha_registro: string
 }
 
 export interface Prescripcion {
@@ -469,6 +460,17 @@ class HistorialClinicoService {
     link.click()
     document.body.removeChild(link)
     window.URL.revokeObjectURL(url)
+  }
+  /**
+   * Guardar el estado completo del odontograma (React module)
+   */
+  async guardarOdontograma(data: {
+    id_historial: number
+    odontograma_state: any
+    odontograma_image?: string
+  }): Promise<any> {
+    const response = await apiClient.post('/clinica/odontograma', data)
+    return response.data.data
   }
 }
 
